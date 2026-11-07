@@ -1,0 +1,359 @@
+WINDOW: RHI | class=WinUIDesktopWin32WindowClass | pid=30132
+ControlType.Pane	Non Client Input Sink Window		InputNonClientPointerSource
+ControlType.Pane	AppWindow Custom Title Bar		ReunionWindowingCaptionControls
+ControlType.Button	Minimize	Minimize	
+ControlType.Button	Maximize	Maximize	
+ControlType.Button	Close	Close	
+ControlType.Pane			Microsoft.UI.Content.DesktopChildSiteBridge
+ControlType.Pane			InputSiteWindowClass
+ControlType.Image			Image
+ControlType.Text	RHI		TextBlock
+ControlType.Text	Simplified PC Gaming		TextBlock
+ControlType.Button	Quick Start	FaqBtn	Button
+ControlType.Button	Available Mods	HdrModsListBtn	Button
+ControlType.Button	Refresh	RefreshBtn	Button
+ControlType.Button	Shaders/Addons	ShadersAddonsBtn	Button
+ControlType.Button	Update All	UpdateBtn	Button
+ControlType.Button	Links	LinksBtn	Button
+ControlType.Button	Help	SupportBtn	Button
+ControlType.Button	Donate	DonateBtn	Button
+ControlType.Button	Settings	SettingsBtn	Button
+ControlType.Edit	Filter games...	SearchBox	TextBox
+ControlType.Button	+	AddGameBtn	Button
+ControlType.Button	All Games	FilterDetected	Button
+ControlType.Button	Installed	FilterInstalled	Button
+ControlType.Button	Favourites	FilterFavourites	Button
+ControlType.Button	Hidden	FilterHidden	Button
+ControlType.Button	Unreal	FilterUnreal	Button
+ControlType.Button	Unity	FilterUnity	Button
+ControlType.Button	Other	FilterOther	Button
+ControlType.Button	RenoDX	FilterRenoDX	Button
+ControlType.Button	Luma	FilterLuma	Button
+ControlType.Text	19 shown	GameCountText	TextBlock
+ControlType.Text	1 ReShade	InstalledCountText	TextBlock
+ControlType.Text		HiddenCountText	TextBlock
+ControlType.List		GameList	ListView
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	Bitburner		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	Cookie Clicker		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	CRACKED		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Text	🔧		TextBlock
+ControlType.Text	Death in the Water 2		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	Green Hell		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	Hidden Folks		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	Ogu and the Secret Forest		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	OTXO		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	Parquet Viewer		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	People Playground		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	Retrocycles		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	Seelen UI		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	STRAFTAT		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	Terraria		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	The Farmer Was Replaced		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	tModLoader		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	Upload Labs		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	VALORANT		TextBlock
+ControlType.ListItem	RenoDXCommander.ViewModels.GameCardViewModel		ListViewItem
+ControlType.Image			Image
+ControlType.Text	VRoid Studio		TextBlock
+ControlType.Pane		DetailScrollViewer	ScrollViewer
+ControlType.Text	Death in the Water 2	DetailGameName	TextBlock
+ControlType.Text	C:\Users\cattu\Documents\Directories\Denuvo\Death In The water\death In The Water	DetailInstallPath	TextBlock
+ControlType.Button	▶ Launch	DetailLaunchBtn	Button
+ControlType.Text	▶ Launch		TextBlock
+ControlType.Button	HDR	DetailHdrToggleBtn	Button
+ControlType.Text	HDR	DetailHdrToggleText	TextBlock
+ControlType.Button	RES	DetailResToggleBtn	Button
+ControlType.Text	RES	DetailResToggleText	TextBlock
+ControlType.Text	Manual	DetailSourceText	TextBlock
+ControlType.Text	renodx-unityengine.addon64	DetailInstalledFile	TextBlock
+ControlType.Text	64-bit		TextBlock
+ControlType.Button	Hide	DetailHideBtn	Button
+ControlType.Text	Hide	DetailHideIcon	TextBlock
+ControlType.Button	Favourite	DetailFavBtn	Button
+ControlType.Text	Favourite	DetailFavIcon	TextBlock
+ControlType.Button	Browse	DetailFolderBtn	Button
+ControlType.Text	Browse		TextBlock
+ControlType.Text	≡		TextBlock
+ControlType.Text	▼	DetailComponentsArrow	TextBlock
+ControlType.Text	Components	DetailComponentsTitle	TextBlock
+ControlType.Text	ReShade		TextBlock
+ControlType.Text	6.8.0	DetailRsStatus	TextBlock
+ControlType.Button	Info	DetailRsInfoBtn	Button
+ControlType.Button	↺  Reinstall ReShade	DetailRsInstallBtn	Button
+ControlType.Button	⚙	DetailRsIniBtn	Button
+ControlType.Text	⚙		TextBlock
+ControlType.Button	✕	DetailRsDeleteBtn	Button
+ControlType.Text	✕		TextBlock
+ControlType.Text	———  HDR Mods  ———		TextBlock
+ControlType.Text	RenoDX HDR	DetailRdxLabel	TextBlock
+ControlType.Text	Installed	DetailRdxStatus	TextBlock
+ControlType.Button	Info	DetailRdxInfoBtn	Button
+ControlType.Button	↺  Reinstall RenoDX	DetailRdxInstallBtn	Button
+ControlType.Button	⚙	DetailUeExtendedBtn	Button
+ControlType.Text	⚙		TextBlock
+ControlType.Button	✕	DetailRdxDeleteBtn	Button
+ControlType.Text	✕		TextBlock
+ControlType.Text	———  Frame limiters — Choose one  ———		TextBlock
+ControlType.Text	ReLimiter	DetailUlLabel	TextBlock
+ControlType.Text	Ready	DetailUlStatus	TextBlock
+ControlType.Button	Info	DetailUlInfoBtn	Button
+ControlType.Button		DetailUlInstallBtn	Button
+ControlType.Text	⬇  Install ReLimiter		TextBlock
+ControlType.Text	◄		TextBlock
+ControlType.Button	⚙	DetailUlIniBtn	Button
+ControlType.Text	⚙		TextBlock
+ControlType.Button	✕	DetailUlDeleteBtn	Button
+ControlType.Text	✕		TextBlock
+ControlType.Text	Display Commander	DetailDcLabel	TextBlock
+ControlType.Text	Ready	DetailDcStatus	TextBlock
+ControlType.Button	Info	DetailDcInfoBtn	Button
+ControlType.Button		DetailDcInstallBtn	Button
+ControlType.Text	⬇  Install DC		TextBlock
+ControlType.Text	◄		TextBlock
+ControlType.Button	⚙	DetailDcIniBtn	Button
+ControlType.Text	⚙		TextBlock
+ControlType.Button	✕	DetailDcDeleteBtn	Button
+ControlType.Text	✕		TextBlock
+ControlType.Text	≡		TextBlock
+ControlType.Text	▼		TextBlock
+ControlType.Text	Game Overrides		TextBlock
+ControlType.Edit	Game name		TextBox
+ControlType.Text	Game name		TextBlock
+ControlType.Edit	Wiki mod name		TextBox
+ControlType.Text	Wiki mod name		TextBlock
+ControlType.Button	Reset name		Button
+ControlType.ComboBox			ComboBox
+ControlType.Text	DLL naming overrides		TextBlock
+ControlType.Text	ReShade		TextBlock
+ControlType.Text	Display Commander		TextBlock
+ControlType.Text	OptiScaler		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.ComboBox			ComboBox
+ControlType.ComboBox			ComboBox
+ControlType.Button	Reset DLL names		Button
+ControlType.Text	Bitness		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Graphics API		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	ReShade Channel		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Update inclusion		TextBlock
+ControlType.Button	Choose components...		Button
+ControlType.Text	RS: Off  ·  RDX: On  ·  RL: On  ·  DC: On  ·  OS: On		TextBlock
+ControlType.Text	Shaders and Addons		TextBlock
+ControlType.Text	Shaders		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Addons		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Button	Select ReShade Preset		Button
+ControlType.Text	Launch executable  —  Death in the Water 2.exe		TextBlock
+ControlType.Text	 		TextBlock
+ControlType.Edit	Auto-detect (or paste path)		TextBox
+ControlType.Edit	Launch arguments		TextBox
+ControlType.Button	Browse		Button
+ControlType.Button	Reset launch options		Button
+ControlType.Text	≡		TextBlock
+ControlType.Text	▼		TextBlock
+ControlType.Text	Neural Rendering		TextBlock
+ControlType.Text	Method		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Feeder Version		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	DLSS5 Tool Version		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	NR DLL Version		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	✓ ReShade		TextBlock
+ControlType.Text	✗ Feeder Addon		TextBlock
+ControlType.Text	✗ DLSS5 Tool		TextBlock
+ControlType.Text	✗ DLSS SR		TextBlock
+ControlType.Text	✗ NR DLL		TextBlock
+ControlType.Text	✗ Feed.fx		TextBlock
+ControlType.Text	✗ LumeniteFX		TextBlock
+ControlType.Text	For games with no native DLSS (DX11, DX12, Vulkan, OpenGL). Feeds a synthetic DLSS contract from ReShade depth and motion vectors. Deploys the Feeder addon, DLSS5 Tool (neural consumer), NR DLL, DLSS SR DLL, and required shaders.		TextBlock
+ControlType.Hyperlink	Feeder setup guide →		Hyperlink
+ControlType.Button	Install Feeder Addon		Button
+ControlType.Text	NR Cost Scaler		TextBlock
+ControlType.Button	Off		ToggleSwitch
+ControlType.Text			TextBlock
+ControlType.Hyperlink	DLSS5 Tool →		Hyperlink
+ControlType.Hyperlink	DX11 Bridge →		Hyperlink
+ControlType.Hyperlink	ShortFuse →		Hyperlink
+ControlType.Hyperlink	Feeder →		Hyperlink
+ControlType.Text	≡		TextBlock
+ControlType.Text	▼		TextBlock
+ControlType.Text	DLSS / Streamline		TextBlock
+ControlType.Text	DLSS Super Resolution		TextBlock
+ControlType.Text	Version		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Preset		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Render Scale		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Ray Reconstruction		TextBlock
+ControlType.Text	Version		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Frame Generation		TextBlock
+ControlType.Text	Version		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	 		TextBlock
+ControlType.Button	Multi Frame Gen		Button
+ControlType.Text	Neural Rendering		TextBlock
+ControlType.Text	Version		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Preset		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	 		TextBlock
+ControlType.Button	Deploy DLL		Button
+ControlType.Button	✕		Button
+ControlType.Text	✕		TextBlock
+ControlType.Text	Streamline		TextBlock
+ControlType.Text	Version		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	 		TextBlock
+ControlType.Button	Quick Apply		Button
+ControlType.Text	 		TextBlock
+ControlType.Button	Restore DLSS/SL		Button
+ControlType.Text	≡		TextBlock
+ControlType.Text	▼		TextBlock
+ControlType.Text	Driver Settings		TextBlock
+ControlType.Text	VSync		TextBlock
+ControlType.Text	Mode		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Tear Control		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Low Latency		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Smooth Motion		TextBlock
+ControlType.Text	Enable		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Allowed APIs		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Flip Pacing		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Other		TextBlock
+ControlType.Text	Power Mode		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	G-Sync		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	FPS Limit		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	ReBAR		TextBlock
+ControlType.Text	Enable		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Mode		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Text	Size Limit		TextBlock
+ControlType.ComboBox			ComboBox
+ControlType.Button	Restore Defaults		Button
+ControlType.Text	Driver 621.01  ·  ⚠ Admin rights required to write driver profile settings. Enable Admin Mode in Settings or restart as admin.		TextBlock
+ControlType.Text	≡		TextBlock
+ControlType.Text	▼		TextBlock
+ControlType.Text	Management		TextBlock
+ControlType.Button	Change install folder		Button
+ControlType.Button	Reset / Remove game		Button
+ControlType.Button	Reset Overrides		Button
+ControlType.Button	Copy Report		Button
+ControlType.Text	≡		TextBlock
+ControlType.Text	▼		TextBlock
+ControlType.Text	Extras		TextBlock
+ControlType.Text	ASI Loader		TextBlock
+ControlType.Text	Ready		TextBlock
+ControlType.Button	Info		Button
+ControlType.Button	⬇  Install ASI Loader		Button
+ControlType.Button	⚙		Button
+ControlType.Text	⚙		TextBlock
+ControlType.Button	✕		Button
+ControlType.Text	✕		TextBlock
+ControlType.Text	OptiScaler		TextBlock
+ControlType.Text	Ready		TextBlock
+ControlType.Button	Info		Button
+ControlType.Button	⬇  Install OptiScaler		Button
+ControlType.Button	⚙		Button
+ControlType.Text	⚙		TextBlock
+ControlType.Button	✕		Button
+ControlType.Text	✕		TextBlock
+ControlType.Text	———  MFG Unlocks  ———		TextBlock
+ControlType.Text	RTX Encore		TextBlock
+ControlType.Text	Ready		TextBlock
+ControlType.Button	Info		Button
+ControlType.Button	⬇  Install RTX Encore		Button
+ControlType.Button	⚙		Button
+ControlType.Text	⚙		TextBlock
+ControlType.Button	✕		Button
+ControlType.Text	✕		TextBlock
+ControlType.Text	DLSS Enabler		TextBlock
+ControlType.Text	Ready		TextBlock
+ControlType.Button	Info		Button
+ControlType.Button	⬇  Install DLSS Enabler		Button
+ControlType.Button	⚙		Button
+ControlType.Text	⚙		TextBlock
+ControlType.Button	✕		Button
+ControlType.Text	✕		TextBlock
+ControlType.Text	20/30 FG Unlock		TextBlock
+ControlType.Text	Ready		TextBlock
+ControlType.Button	Info		Button
+ControlType.Button	⬇  Install 20/30 FG		Button
+ControlType.Button	⚙		Button
+ControlType.Text	⚙		TextBlock
+ControlType.Button	✕		Button
+ControlType.Text	✕		TextBlock
+ControlType.Text	Universal MFG Unlocker		TextBlock
+ControlType.Text	Ready		TextBlock
+ControlType.Button	Info		Button
+ControlType.Button	⬇  Install Universal MFG Unlocker		Button
+ControlType.Button	⚙		Button
+ControlType.Text	⚙		TextBlock
+ControlType.Button	✕		Button
+ControlType.Text	✕		TextBlock
+ControlType.Text	MFG Ada Unlock		TextBlock
+ControlType.Text	Ready		TextBlock
+ControlType.Button	Info		Button
+ControlType.Button	⬇  Install MFG Ada Unlock		Button
+ControlType.Button	⚙		Button
+ControlType.Text	⚙		TextBlock
+ControlType.Button	✕		Button
+ControlType.Text	✕		TextBlock
+ControlType.ScrollBar	Vertical	VerticalScrollBar	ScrollBar
+ControlType.Text	Checking for new games and mod info...	StatusBarText	TextBlock
+ControlType.Text	⚠ ReShade, OptiScaler, and DLSS/Streamline modifications may trigger anti-cheat in online/multiplayer games		TextBlock
+ControlType.Button	v2.8.9	StatusBarVersionText	Button
+ControlType.Button	Patch Notes		Button
+ControlType.Button	MOTD		Button
+ControlType.Button	Updates	UpdateLogBtn	Button
+COUNT: 357
