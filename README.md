@@ -1,5 +1,17 @@
 # RHI — ReShade HDR Installer
 
+> **This is a fork that adds [`rhictl`](RHI.Cli/README.md) — a headless CLI for RHI.**
+>
+> `rhictl` drives the same service layer from a terminal: install, update and remove every
+> component, per-game status, DLSS/NVIDIA settings, raw ini editing, batch updates, JSON output
+> and an MCP server — without opening the GUI.
+>
+> **Stock vs this fork:** [what is different](RHICTL.md) · [CLI reference](RHI.Cli/README.md) ·
+> [complete documentation](docs/EVERYTHING.md)
+>
+> The WinUI app itself is **unmodified**: `git diff` on `RenoDXCommander/` against upstream is
+> empty.
+
 **HDR mods, ReShade, DLSS and NVIDIA driver settings for your whole PC game library, from one window.**
 
 RHI finds your games across eight storefronts, then installs, updates and removes ReShade, RenoDX and Luma HDR mods, frame limiters, DLSS/Streamline files, OptiScaler, Neural Rendering tools and more, with per-game control over every one of them.
