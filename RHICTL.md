@@ -27,6 +27,25 @@ rhictl reshade install --game "Your Game" --channel stable --yes
 rhictl renodx install --game "Your Game" --yes
 ```
 
+## Stock vs this fork
+
+| Capability | Stock RHI | This fork |
+|---|---|---|
+| WinUI app (all existing features) | ✅ | ✅ unchanged |
+| Headless operation (no window) | ❌ | ✅ `rhictl` |
+| JSON output + exit codes for every action | ❌ | ✅ |
+| Dry-run preview for mutations | ❌ | ✅ |
+| MCP server for LLM/agent use | ❌ | ✅ `rhictl mcp serve` |
+| Raw ini get/set beyond the cogs | ❌ | ✅ ReShade, RenoDX, ReLimiter, DC, OptiScaler |
+| Bulk HDR peak nits across all RenoDX presets | ❌ (current/checked only) | ✅ `renodx peak-nits` |
+| Environment diagnostics (`doctor`, `paths`) | partial (About/Tools) | ✅ one command |
+| Update only selected components | ❌ (Update All) | ✅ `update all --components` |
+| Scriptable guards (`--yes`, `--force`, exit codes) | dialogs | ✅ |
+| Settings-page editing from CLI | ✅ | ❌ (known gap) |
+| Reset overrides from CLI | ✅ | ❌ (known gap) |
+| Background auto-update / tray / single-instance UX | ✅ | ❌ (GUI-only) |
+| Ultra+ download | link-only | link-only |
+
 ## What is added in this fork
 
 | Path | What |
