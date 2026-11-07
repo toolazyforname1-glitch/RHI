@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    RHI.Core — headless build of RHI's real service layer.
+
+    Nothing is moved or copied: this project *links* the app's own source files
+    (..\RenoDXCommander\Services and Models) so the CLI runs exactly the same code
+    as RHI.exe. The WinUI app project is not referenced and not modified.
+
+    Excluded files are the pure-UI edge — they act on the window/view model and
+    are replaced by the CLI's own orchestration:
+      AddonInfoResolver              — builds the detail-panel info rows
+      AutoUpdateService              — background auto-update loop driven by the VM
+      ControlUePostInstallService    — post-install dialog flow
+      UpdateOrchestrationService(+I) — UI "update all" with DispatcherQueue progress
+
+    SettingsViewModel is linked because it is UI-free (CommunityToolkit + JSON only).
+    Shims\ holds stand-ins for the remaining UI-shaped types.
+
+    RhiSourceDir points at the RHI app source (the folder containing Services\ and
+    Models\). Override it when this repo is not laid out next to the app source:
+      dotnet build -p:RhiSourceDir="C:\path\to\RHI\RenoDXCommander"
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <RootNamespace>RenoDXCommander</RootNamespace>
+    <AssemblyName>RHI.Core</AssemblyName>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <RhiSourceDir Condition="'$(RhiSourceDir)' == ''">$(MSBuildThisFileDirectory)..\RenoDXCommander</RhiSourceDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(RhiSourceDir)\Services\**\*.cs" LinkBase="Services"
+             Exclude="$(RhiSourceDir)\Services\AddonInfoResolver.cs;
+                      $(RhiSourceDir)\Services\AutoUpdateService.cs;
+                      $(RhiSourceDir)\Services\ControlUePostInstallService.cs;
+                      $(RhiSourceDir)\Services\UpdateOrchestrationService.cs;
+                      $(RhiSourceDir)\Services\IUpdateOrchestrationService.cs" />
+    <Compile Include="$(RhiSourceDir)\Models\**\*.cs" LinkBase="Models" />
+    <Compile Include="$(RhiSourceDir)\ViewModels\SettingsViewModel.cs" LinkBase="ViewModels" />
+    <Compile Include="$(RhiSourceDir)\HotkeyManager.cs" LinkBase="AppRoot" />
+    <Compile Include="$(RhiSourceDir)\NativeInterop.cs" LinkBase="AppRoot" />
+    <Compile Include="Shims\**\*.cs" LinkBase="Shims" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.71" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+    <PackageReference Include="NvAPIWrapper.Net" Version="0.8.1.101" />
+    <PackageReference Include="SharpCompress" Version="0.37.2" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>
