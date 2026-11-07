@@ -214,7 +214,7 @@ internal static class ExtrasCommand
             encore.Uninstall(ctx.Path, current, removeNrDll: false);
 
             var mfg = sp.GetRequiredService<Rtx40MfgService>();
-            try { mfg.RemoveEncoreXessFiles(modDir); } catch { /* best effort */ }
+            try { mfg.RemoveEncoreIntelFiles(ctx.Path, modDir); } catch { /* best effort */ }
 
             SetSetting(names.RtxEncoreInstalledAs, ctx, null);
             SaveState(sp);
@@ -243,7 +243,7 @@ internal static class ExtrasCommand
         {
             var dlss = sp.GetRequiredService<IDlssStreamlineService>();
             var nrPath = await encore.EnsureNrDllCachedAsync(dlss);
-            if (nrPath != null) nrDeployed = encore.DeployNrDll(ctx.Path);
+            if (nrPath != null) nrDeployed = encore.DeployNrDll(ctx.Path, chosen);
             else CliOutput.Warn("required NR DLL is not available in the DLSS manifest");
         }
 
