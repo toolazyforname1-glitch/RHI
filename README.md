@@ -165,3 +165,17 @@ RHI downloads these from their official sources. All credit goes to their author
 | [7-Zip](https://www.7-zip.org/) | Igor Pavlov |
 
 Shader packs are the work of their respective authors; each pack links to its source in the shader picker. Game data comes from [PCGamingWiki](https://www.pcgamingwiki.com) and the [HDR Gaming Database](https://github.com/KoKlusz/HDR-Gaming-Database).
+
+---
+
+## Donations
+
+If RHI or `rhictl` saved you some time and you'd like to support the project:
+
+| Network | Address |
+|---|---|
+| Bitcoin | `bc1qxx64jxqyu07au6w6c4lv79s9p8nk9hlkjegclz` |
+| Solana | `BB1bFKdr3AAJ2X4STDXDLMCW16R9Y1BTa9CqMK5QWVi3` |
+| EVM | `0xfb1f8109c07ea777D6d0852afC6e0e21a2658802` |
+| Tron | `TEoqPtUpMvQkj8YgVCXaMkqK6b7a8ZnaSS` |
+| Ton | `UQAyO7eFPtNBFW_gElZSY6B_E-i5GwJqzmHQ2d5rARoqQmOX` |
