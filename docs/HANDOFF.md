@@ -24,7 +24,7 @@ work" document.
 | PR #1 | merged (`e551fbf` → merge `0b36b16`) |
 | .NET SDK | 8.0.427 at `C:\Users\cattu\.dotnet\dotnet.exe` (user-local, no admin) |
 | GitHub CLI | `gh` 2.95.0, account `toolazyforname1-glitch`, scopes `gist, read:org, repo` |
-| Test game | `C:\Users\cattu\Documents\Directories\Denuvo\Death In The water\death In The water` |
+| Test game | removed 2026-11-08 (library cleaned); re-add any title with `game add --path <dir> --name <n>` |
 | Shared app state | `%LOCALAPPDATA%\RHI` |
 | Verify script | `RHI\tools\verify-rhictl.ps1` → **47/47 expected** |
 
@@ -201,9 +201,9 @@ git clone --depth 1 https://github.com/toolazyforname1-glitch/RHI-CLI.git "$env:
 Remove-Item "$env:TEMP\rhi-clone" -Recurse -Force
 ```
 
-Real installs (only when needed): the test game already has ReShade 6.8.0, RenoDX generic Unity
-26.1014.1445 and ReLimiter 3.3.5. Uninstall/reinstall one at a time; do not batch untested
-mutations.
+Real installs (only when needed): no test game is currently registered — the 24 manual test
+entries were removed on 2026-11-08. Add one with `game add --path <dir> --name <n>` and uninstall/
+reinstall one component at a time; do not batch untested mutations.
 
 ---
 
@@ -682,9 +682,11 @@ Upstream: `https://github.com/RankFTW/RHI`
 
 ---
 
-## Appendix C — Test game state (do not assume a clean install)
+## Appendix C — Test game state (historical; test games removed 2026-11-08)
 
-`C:\Users\cattu\Documents\Directories\Denuvo\Death In The water\death In The Water`
+No test game is registered or installed any more. The table below records the state used for the
+2026-11-08 verification runs. Re-add a title with `game add --path <dir> --name <n>` before rerunning
+the live parts of this document.
 
 | File | Source |
 |---|---|
