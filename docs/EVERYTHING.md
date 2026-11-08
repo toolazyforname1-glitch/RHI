@@ -1444,6 +1444,7 @@ Everything below was executed on 2026-11-05 on the test machine.
 | 2026-11-08 multi-game live run | ReShade 64/32/OpenGL, RenoDX Unity/Unreal/UE-Extended, RE Framework, ReLimiter, DC, OptiScaler, ASI, DLSS Enabler, FG 20/30, MFG40, Encore, dgVoodoo, DXVK 32-bit, shaders, addons, preset, HDR, NVIDIA, set-name/set-dll/set-override; 50/50 |
 | 2026-11-08 targeted DLSS/UE5/Luma run | Portal RTX RR/FG/NR swaps + restore, Jusant SR swap + DOF Fix + RenoDX, Thumper Luma/dgVoodoo/DX9 ReShade, Quake II RTX Vulkan install/uninstall elevated; 50/50 |
 | 2026-11-08 Feeder | `feeder v1.19.0` install/uninstall on Jusant (Feeder addon, DLSS5 Tool, NR/SR DLLs, DLSS5_Feed.fx + lumenite_Kernel.fx, clean shader removal); suite 50/50 |
+| 2026-11-09 visual NR | Jusant: ReShade lists DLSS5_Feed.fx + Lumenite; Add-ons lists DLSS 5 Feed 1.19.0 + DLSS 5 Neural Rendering; NR panel DLSSNR 310.9.16.0. Portal RTX RR visual blocked by the repack base-game check |
 
 Not executed live (deliberately): NVIDIA writes, HDR on/off, resolution change, vibrance set,
 Vulkan layer install, and installation of the extras proxy DLLs. All have dry-run coverage.

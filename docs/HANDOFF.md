@@ -189,7 +189,9 @@ TOTAL: 50  PASS: 50  FAIL: 0
   `310.9.16`, SR `310.9.16`, `DLSS5_Feed.fx` + `lumenite_Kernel.fx`) with a clean shader-folder
   removal.
 - **Thumper** (DX9) — ReShade 6.8.0 `d3d9.dll`; Luma build 810 (48 files); dgVoodoo 2.87.6.
-- **Quake II RTX** (Vulkan) — `vulkan status` works; elevated `vulkan install --layer-only` created the layer, and
+- **Jusant visual check** - ReShade 6.8.0 shows `DLSS5_Feed.fx` + `Lumenite_Kernel.fx`; Add-ons lists
+  **DLSS 5 Feed 1.19.0** and **DLSS 5 Neural Rendering**; the NR panel reports
+  `RenoDX DLSS5 Generic v10.8.0 | DLSSNR 310.9.16.0` (idle only because in-game DLSS was off).- **Quake II RTX** (Vulkan) — `vulkan status` works; elevated `vulkan install --layer-only` created the layer, and
   `vulkan uninstall` removed it cleanly.
 
 Two checks (`renodx ini-get`, `relimiter ini-list`) **skip with a pass** when the component is not
@@ -325,9 +327,10 @@ merge invalidated it; the fix commit exists because of that lesson.
 | 14 | ~~DLSS `set`/`restore` not live-tested~~ **done** | RR/FG/NR/SR swaps + restores verified | Portal RTX, Jusant |
 | 15 | ~~Luma not live-tested~~ **done** | install/uninstall verified | Thumper, build 810 |
 | 16 | ~~DOF Fix not live-tested~~ **done** | install/uninstall verified | Jusant (UE5.2), after the engine-hint fix |
-| 17 | FG / MFG effect not visually verified | file swaps verified; game not launched | visual proof only |
+| 17 | FG / MFG output not visually verified | NR/Feeder add-on **is** visually verified in Jusant; FG effect needs DLSS enabled in-game | visual proof only |
 | 18 | Per-game resolution toggle is system-wide | `res set` changes the display, not a game override; `ResToggleOverrides` is set via `game set-override --kind res-toggle` | by design |
 | 19 | ~~Feeder addon has no CLI verb~~ **done** | `feeder status/install/uninstall`; deploys Feeder addon, DLSS5 Tool, NR/SR DLLs and the two shaders | Jusant v1.19.0; 64-bit only (32-bit host64 still GUI) |
+| 20 | Portal RTX repack cannot boot `-game portal_rtx` | all app depots present (2012841/42/49, 18.6 GB); engine fails the base Source game check; stub `hl2/gameinfo.txt` and SSE AppID 220 do not satisfy it | needs genuine HL2/Portal ownership or a valid base-game install |
 
 ---
 
