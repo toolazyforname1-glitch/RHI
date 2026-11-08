@@ -319,7 +319,7 @@ merge invalidated it; the fix commit exists because of that lesson.
 | 10 | No isolated state directory | CLI and GUI share `%LOCALAPPDATA%\RHI` | by design; `RHI_STATE_DIR` not implemented |
 | 11 | ReShade 6.8 screenshot *name* key unconfirmed | one doc line marked likely | path/format/overlay toggle confirmed |
 | 12 | Ultra+ is link-only | no download | same as the GUI |
-| 13 | Vulkan install/uninstall not live-tested | layer-only path returns elevation error unelevated | status verified on Quake II RTX; install needs an elevated terminal |
+| 13 | ~~Vulkan install/uninstall not live-tested~~ **done** | elevated install created ReShade64.dll/ReShade64.json + the HKLM implicit-layer entry; uninstall removed both and status returned false | Quake II RTX |
 | 14 | ~~DLSS `set`/`restore` not live-tested~~ **done** | RR/FG/NR/SR swaps + restores verified | Portal RTX, Jusant |
 | 15 | ~~Luma not live-tested~~ **done** | install/uninstall verified | Thumper, build 810 |
 | 16 | ~~DOF Fix not live-tested~~ **done** | install/uninstall verified | Jusant (UE5.2), after the engine-hint fix |
