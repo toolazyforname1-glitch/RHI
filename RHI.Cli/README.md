@@ -47,6 +47,8 @@ game reset-wiki-name --game <n>
 game set-name --game <n> --name <new display name>
 game set-dll --game <n> [--reshade <file.dll>] [--dc <file.dll>] [--os <file.dll>]
 game reset-dll --game <n>
+game set-override --game <n> --kind <k> --value <v>
+game clear-override --game <n> --kind <k>
 game reset-overrides --game <n>
 reshade install|update|uninstall
 reshade|renodx|relimiter|display-commander|optiscaler ini-list|ini-get|ini-set

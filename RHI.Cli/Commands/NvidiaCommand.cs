@@ -204,6 +204,10 @@ internal static class NvidiaCommand
 
         if (!write)
         {
+            if (key is not ("vsync" or "vsync-tear" or "power" or "low-latency" or "smooth-motion" or "fps-limit" or "gsync"))
+                return CliOutput.Fail(command, "BAD_KEY",
+                    "Unknown key. Try: vsync, vsync-tear, power, low-latency, smooth-motion, fps-limit, gsync.", ExitCodes.Usage);
+
             object? value = key switch
             {
                 "vsync" => presets.GetVSyncMode(ctx.Name, ctx.Path),
@@ -215,10 +219,7 @@ internal static class NvidiaCommand
                 "gsync" => presets.GetPerGameGSyncEnabled(ctx.Name, ctx.Path),
                 _ => null,
             };
-
-            if (value == null)
-                return CliOutput.Fail(command, "BAD_KEY",
-                    "Unknown key. Try: vsync, vsync-tear, power, low-latency, smooth-motion, fps-limit, gsync.", ExitCodes.Usage);
+            value ??= 0;
 
             CliOutput.Human(() => Console.WriteLine($"{key} = {value}"));
             return CliOutput.Ok(command, new { key, value });

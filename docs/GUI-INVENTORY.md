@@ -111,10 +111,15 @@ Everything else in this group now maps to a CLI verb:
 |---|---|
 | Game name / Wiki mod name / Reset name | `game set-name`, `game set-wiki-name`, `game reset-wiki-name` |
 | DLL name dropdowns / Reset DLL names | `game set-dll`, `game reset-dll`; `reshade --dll` at install |
-| Shader mode + Choose components… | `reshade --shaders/--packs` covers ReShade only; `game reset-overrides` resets per-game mode |
+| Shader mode + Choose components… | `game set-override --kind shader-mode|shader-selection`; `game reset-overrides` |
 | Select ReShade Preset | `preset deploy --game <n> --file a.ini [--with-shaders]` |
 | Launch exe / Launch arguments / Reset | `game set-launch --exe/--args`, `game reset-launch` |
-| ReShade channel | `reshade --channel` |
+| ReShade channel | `reshade --channel`, or `game set-override --kind channel` |
+| Bitness / API / Vulkan path / folder | `game set-override --kind bitness|api|vulkan-path|folder` |
+| Update-all exclusion | `game set-override --kind exclude-reshade|exclude-renodx|exclude-ul|exclude-dc|exclude-os|exclude-ref` |
+| Wiki exclusion / Normal ReShade / ASI | `game set-override --kind wiki-exclude|normal-reshade|rs-asi` |
+| DXVK variant / Lilium preset | `game set-override --kind dxvk-variant|lilium-preset` |
+| OptiScaler variant / nightly / NR | `game set-override --kind os-variant|os-nightly|nr-*` |
 | Keep ReShade.ini Updated | `config get|set --key …` |
 
 ## Settings pages

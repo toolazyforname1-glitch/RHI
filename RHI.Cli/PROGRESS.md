@@ -38,6 +38,7 @@ game set-launch|reset-launch         [--exe <path>] [--args "..."]
 game set-wiki-name|reset-wiki-name    --name <wiki name>
 game set-name                        --name <new display name>
 game set-dll|reset-dll               [--reshade <file.dll>] [--dc <file.dll>] [--os <file.dll>]
+game set-override|clear-override     --kind <k> [--value <v>]
 game reset-overrides
 reshade|renodx|relimiter|display-commander|optiscaler ini-list|ini-get|ini-set
 reshade install|update|uninstall      --channel --dll --shaders --packs --no-addons
@@ -117,8 +118,8 @@ All mutating verbs require `--yes`; all support `--dry-run`.
 ## Verified on hardware
 
 `Death in the Water 2` (Unity, DX11, 64-bit):
-- `tools\verify-rhictl.ps1` → **45/45** (config, reset-overrides and set-launch checks added 2026-11-08)
-- Live 2026-11-08: `reshade install/uninstall`, `renodx install/uninstall`, `relimiter install/uninstall`, `game set-name` round-trip, `game set-dll`/`reset-dll` round-trip, `game reset-overrides`
+- `tools\verify-rhictl.ps1` → **47/47** (config, reset-overrides and set-launch checks added 2026-11-08)
+- Live 2026-11-08: ReShade (64-bit, 32-bit, OpenGL), RenoDX (Unity, generic Unreal, UE-Extended), RE Framework, ReLimiter, Display Commander, OptiScaler, ASI, DLSS Enabler, 20/30 FG, MFG40, RTX Encore, dgVoodoo, DXVK 32-bit, shaders, addons, preset deploy, HDR, NVIDIA get/set/preset/override, set-name, set-dll/reset-dll, set-override/clear-override, reset-overrides
 - ReShade 6.8.0 → `dxgi.dll`
 - RenoDX generic Unity 26.1014.1445 → `renodx-unityengine.addon64`
 - ReLimiter v3.3.5 → `relimiter.addon64`

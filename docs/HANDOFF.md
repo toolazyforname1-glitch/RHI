@@ -2,7 +2,7 @@
 
 **Written:** 2026-11-08
 **For:** whoever continues this project (human or fresh agent)
-**Status at write time:** everything builds, **45/45 checks pass**, parity batch 1 (config, launch/wiki
+**Status at write time:** everything builds, **47/47 checks pass**, parity batch 1 (config, launch/wiki
 overrides, reset-overrides, UE-Extended) is implemented and verified. Fork push pending.
 
 Read this file first. It is deliberately operational: exact paths, exact commands, exact state,
@@ -26,7 +26,7 @@ work" document.
 | GitHub CLI | `gh` 2.95.0, account `toolazyforname1-glitch`, scopes `gist, read:org, repo` |
 | Test game | `C:\Users\cattu\Documents\Directories\Denuvo\Death In The water\death In The water` |
 | Shared app state | `%LOCALAPPDATA%\RHI` |
-| Verify script | `RHI\tools\verify-rhictl.ps1` → **45/45 expected** |
+| Verify script | `RHI\tools\verify-rhictl.ps1` → **47/47 expected** |
 
 If any of these differ, verify before continuing:
 
@@ -139,7 +139,7 @@ DOF not eligible), check the `-Expected`/`-ErrorCode` handling before assuming a
 
 ---
 
-## 5. What the 45/45 verification actually covers
+## 5. What the 47/47 verification actually covers
 
 `RHI\tools\verify-rhictl.ps1` (parameters `-Exe`, `-Game`, defaults: the published exe and
 "Death in the Water 2").
@@ -164,13 +164,22 @@ DOF not eligible), check the `-Expected`/`-ErrorCode` handling before assuming a
 Expected tail:
 
 ```
-TOTAL: 45  PASS: 45  FAIL: 0
+TOTAL: 47  PASS: 47  FAIL: 0
 ```
 
-**Live-verified 2026-11-08:** `reshade install` → `uninstall` → `install`, `renodx install` →
-`uninstall`, `relimiter install` → `uninstall` (with `[FrameLimiter]` normalization and an
-`ini-set`/`ini-get` round-trip), `game set-name` round-trip, `game set-dll dxgi.dll→d3d11.dll` →
-`reset-dll`, and `game reset-overrides` clearing 4 entries.
+**Live-verified 2026-11-08 (multi-game):**
+- ReShade 6.8.0 install/uninstall: 64-bit DX11 (Death in the Water 2, RE2), 32-bit DX11 (Dredge),
+  OpenGL (Firewatch).
+- RenoDX: Unity 26.1014.1445; generic Unreal 26.1104.1857 (Stray); UE-Extended 26.1105.1745 with
+  the on/off flag.
+- RE Framework `01438` (RE2), ReLimiter 3.3.5 + ini round-trip, Display Commander 1.0.6.3562,
+  OptiScaler (`dxgi.dll`), ASI (`dinput8.dll`), DLSS Enabler, 20/30 FG, MFG40, RTX Encore,
+  dgVoodoo 2.87.6 — all install + uninstall.
+- DXVK v3.1.1 32-bit (Mini Motorways).
+- Shaders: Lilium (46 files) install/remove; addons: AutoReload install/remove; preset deploy.
+- HDR on/off; NVIDIA `fps-limit` set/get/restore, `sr` preset write, override off/on.
+- `game set-name` round-trip; `set-dll`/`reset-dll` (`dxgi.dll`↔`d3d11.dll`); `set-override`
+  channel/bitness/wiki/update-exclusion + clear; `reset-overrides`.
 
 Two checks (`renodx ini-get`, `relimiter ini-list`) **skip with a pass** when the component is not
 installed in the target game, so a cleaned game still reports a meaningful green. Three checks are
@@ -301,6 +310,12 @@ merge invalidated it; the fix commit exists because of that lesson.
 | 10 | No isolated state directory | CLI and GUI share `%LOCALAPPDATA%\RHI` | by design; `RHI_STATE_DIR` not implemented |
 | 11 | ReShade 6.8 screenshot *name* key unconfirmed | one doc line marked likely | path/format/overlay toggle confirmed |
 | 12 | Ultra+ is link-only | no download | same as the GUI |
+| 13 | Vulkan install/uninstall not live-tested | layer-only path returns elevation error unelevated | no Vulkan game in the collection |
+| 14 | DLSS `set`/`restore` not live-tested | no `nvngx` game in the collection | needs a DLSS title |
+| 15 | Luma not live-tested | catalog exists (59 games), none owned | needs one Luma-supported title |
+| 16 | DOF Fix not live-tested | requires UE **5.0–5.6**; Stray is UE4 | needs a UE5 title |
+| 17 | FG / MFG / NR live paths untested | install/uninstall verified, effect unverified | needs a DLSS-FG game |
+| 18 | Per-game resolution toggle is system-wide | `res set` changes the display, not a game override; `ResToggleOverrides` is set via `game set-override --kind res-toggle` | by design |
 
 ---
 
@@ -482,6 +497,16 @@ is unaffected; default unchanged.
 15. **Coordinates are client pixels**; multiply by `clientWidth / imageWidth` when using
     `-MaxWidth`.
 16. **UIPI**: a non-elevated probe cannot send messages to an elevated window.
+17. **UE games store the project root.** `game add` must keep `<Project>` (parent of
+    `Binaries`), not `Binaries\Win64`; `GameResolver` walks up from `Binaries` to heal old
+    entries. Addons deploy to the binaries folder, resolved by `ModInstallService`.
+18. **`nvidia get` returns 0 for an unset key**, not `BAD_KEY`; only unknown key names are errors.
+19. **RenoDX falls back to the generic engine addon** when the wiki match has no snapshot URL
+    (Nexus-only entries). Do not treat that as `NO_MOD`.
+20. **`reshade --dll` accepts a stem** (`dxgi`) and normalizes it to `dxgi.dll`; a raw stem used to
+    create an extensionless file.
+21. **ReLimiter install normalizes** the template's `[UltraLimiter]` to `[FrameLimiter]`; a fresh
+    template has no keys, so `ini-get target_fps` is legitimately `KEY_NOT_FOUND` until set.
 
 ---
 
@@ -581,6 +606,7 @@ same commit.
 | `tools/verify-rhictl.ps1` | committed 2026-11-08 |
 | `RHI.Cli/Commands/ConfigCommand.cs` | committed 2026-11-08 |
 | `RHI.Cli/Commands/GameOverridesReset.cs` | committed 2026-11-08 |
+| `RHI.Cli/Commands/GameOverridesSet.cs` | committed 2026-11-08 |
 | `RHI-CLI-Repo` | snapshot updated with `DragDropHandlerShim.cs` + `ExtrasCommand.cs`; not a git repo |
 | `ss tool\probe.ps1`, `ss tool\PROBE.md` | current universal versions |
 | `%LOCALAPPDATA%\RHI` | shared state; do not commit |
@@ -602,7 +628,7 @@ status
 config list|get|set|unset
 library list|show|refresh
 game add|remove|launch|favourite|unfavourite|hide|unhide|set-path
-game set-launch|reset-launch|set-wiki-name|reset-wiki-name|set-name|set-dll|reset-dll|reset-overrides
+game set-launch|reset-launch|set-wiki-name|reset-wiki-name|set-name|set-dll|reset-dll|set-override|clear-override|reset-overrides
 reshade install|update|uninstall
 reshade|renodx|relimiter|display-commander|optiscaler ini-list|ini-get|ini-set
 shaders list|install|remove
@@ -702,7 +728,7 @@ The game's Unity prefs live at `HKCU\Software\Lighthouse Games Studio\Death in t
 
 - [ ] `dotnet build RHI.Cli\RHI.Cli.csproj -c Release` → 0 errors
 - [ ] `dotnet publish ...` → 0 errors
-- [ ] `tools\verify-rhictl.ps1` → 45/45 (or the new count, with new checks added)
+- [ ] `tools\verify-rhictl.ps1` → 47/47 (or the new count, with new checks added)
 - [ ] no `bin/`/`obj/`/state/`RHI-Setup.exe` staged
 - [ ] docs updated (`HANDOFF`, `EVERYTHING`, `GUI-INVENTORY` if a GUI item moved)
 - [ ] commit + push to `fork main` (HTTP/1.1 flags)

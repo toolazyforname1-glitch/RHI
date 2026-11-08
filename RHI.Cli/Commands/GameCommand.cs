@@ -39,23 +39,27 @@ internal static class GameCommand
                            ?? ExeLocator.DeriveName(exe)
                            ?? new DirectoryInfo(installPath).Name;
 
+                var storedPath = engine is EngineType.Unreal or EngineType.UnrealLegacy
+                    ? GameResolver.UeProjectRoot(installPath) ?? rawPath
+                    : installPath;
+
                 var lib = LibraryStore.Load(library);
                 var manual = library.ToManualGames(lib);
 
                 // Replace an existing entry for the same name *or* same path — never duplicate.
                 manual.RemoveAll(g =>
                     g.Name.Equals(name, StringComparison.OrdinalIgnoreCase) ||
+                    LibraryStore.NormalizePath(g.InstallPath) == LibraryStore.NormalizePath(storedPath) ||
                     LibraryStore.NormalizePath(g.InstallPath) == LibraryStore.NormalizePath(installPath));
                 manual.Add(new DetectedGame
                 {
                     Name = name,
-                    InstallPath = installPath,
+                    InstallPath = storedPath,
                     Source = "Manual",
                     IsManuallyAdded = true,
                 });
 
-                // Cache the engine lookup the same way the GUI does.
-                var rootKey = LibraryStore.NormalizePath(rawPath);
+                var rootKey = LibraryStore.NormalizePath(storedPath);
                 if (engine != EngineType.Unknown)
                     lib.EngineTypeCache[rootKey] = engine.ToString();
                 lib.ResolvedPathCache[rootKey] = installPath;
@@ -66,7 +70,7 @@ internal static class GameCommand
                     {
                         Console.WriteLine("Dry run — nothing written.");
                         Console.WriteLine($"  name:      {name}");
-                        Console.WriteLine($"  install:   {installPath}");
+                        Console.WriteLine($"  install:   {storedPath}");
                         Console.WriteLine($"  exe:       {exe ?? "(not found)"}");
                         Console.WriteLine($"  engine:    {engine}");
                     });
@@ -74,7 +78,7 @@ internal static class GameCommand
                     {
                         dryRun = true,
                         name,
-                        installPath,
+                        installPath = storedPath,
                         exe,
                         engine = engine.ToString(),
                     }));
@@ -85,7 +89,7 @@ internal static class GameCommand
                 CliOutput.Human(() =>
                 {
                     Console.WriteLine($"Added '{name}'");
-                    Console.WriteLine($"  install: {installPath}");
+                    Console.WriteLine($"  install: {storedPath}");
                     Console.WriteLine($"  exe:     {exe ?? "(not found)"}");
                     Console.WriteLine($"  engine:  {engine}");
                 });
@@ -93,7 +97,7 @@ internal static class GameCommand
                 return Task.FromResult(CliOutput.Ok(command, new
                 {
                     name,
-                    installPath,
+                    installPath = storedPath,
                     exe,
                     engine = engine.ToString(),
                 }));
@@ -639,6 +643,12 @@ internal static class GameCommand
                     : $"No DLL override was set for '{ctx.Name}'."));
                 return Task.FromResult(CliOutput.Ok(command, new { game = ctx.Name, removed = had }));
             }
+
+            case "set-override":
+                return GameOverridesSet.RunAsync(args, sp, command, clear: false);
+
+            case "clear-override":
+                return GameOverridesSet.RunAsync(args, sp, command, clear: true);
 
             case "reset-overrides":
                 return GameOverridesReset.RunAsync(args, sp, command);

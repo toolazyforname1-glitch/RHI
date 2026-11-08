@@ -113,6 +113,20 @@ internal static class GameResolver
         var (resolvedPath, engine) = detection.DetectEngineAndPath(rawPath);
         if (!Directory.Exists(resolvedPath)) resolvedPath = rawPath;
 
+        if (engine == EngineType.Unknown)
+        {
+            var ueRoot = UeProjectRoot(rawPath);
+            if (ueRoot != null)
+            {
+                var (ueResolved, ueEngine) = detection.DetectEngineAndPath(ueRoot);
+                if (ueEngine != EngineType.Unknown)
+                {
+                    resolvedPath = ueResolved;
+                    engine = ueEngine;
+                }
+            }
+        }
+
         string? exe = null;
         try { exe = ExeLocator.Find(resolvedPath); } catch { /* best effort */ }
 
@@ -149,5 +163,24 @@ internal static class GameResolver
             FromLibrary = fromLibrary,
         };
         return true;
+    }
+
+    internal static string? UeProjectRoot(string path)
+    {
+        try
+        {
+            var dir = new DirectoryInfo(path);
+            var current = dir;
+            while (current != null)
+            {
+                if (current.Name.Equals("Binaries", StringComparison.OrdinalIgnoreCase) && current.Parent != null)
+                    return current.Parent.FullName;
+                current = current.Parent;
+            }
+        }
+        catch
+        {
+        }
+        return null;
     }
 }

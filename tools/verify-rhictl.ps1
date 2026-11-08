@@ -78,6 +78,8 @@ Run-Check "set-launch dry"    @("game","set-launch","--game",$Game,"--args","-wi
 Run-Check "set-name dry"      @("game","set-name","--game",$Game,"--name","Cli Rename Test","--dry-run","--json") -Json
 Run-Check "set-dll dry"       @("game","set-dll","--game",$Game,"--reshade","dxgi.dll","--dry-run","--json") -Json
 Run-Check "reset-dll dry"     @("game","reset-dll","--game",$Game,"--dry-run","--json") -Json
+Run-Check "set-override dry"  @("game","set-override","--game",$Game,"--kind","channel","--value","nightly","--dry-run","--json") -Json
+Run-Check "clear-override dry" @("game","clear-override","--game",$Game,"--kind","channel","--dry-run","--json") -Json
 Run-Check "renodx ini-get"    @("renodx","ini-get","--game",$Game,"--section","renodx-preset1","--key","toneMapPeakNits","--json") -Json -SkipUnlessComponent "renodx"
 Run-Check "relimiter ini-list" @("relimiter","ini-list","--game",$Game,"--json") -Json -SkipUnlessComponent "relimiter"
 

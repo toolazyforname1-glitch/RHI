@@ -827,6 +827,8 @@ rhictl game set-name --game <n> --name <new display name>
 rhictl game set-dll --game <n> [--reshade <file.dll>] [--dc <file.dll>] [--os <file.dll>]
 rhictl game reset-dll --game <n>
 rhictl game reset-overrides --game <n>
+rhictl game set-override --game <n> --kind <k> --value <v>
+rhictl game clear-override --game <n> --kind <k>
 ```
 
 - `set-launch` writes `LaunchExeOverrides` / `LaunchArgsOverrides` (name-keyed); `reset-launch`
@@ -838,6 +840,12 @@ rhictl game reset-overrides --game <n>
 - `set-dll` enables/updates the ReShade/DC DLL override (`EnableDllOverride` /
   `UpdateDllOverrideNames`) and the OptiScaler override (`SetOsDllOverride`); `reset-dll` reverts
   the files with `DisableDllOverride`.
+- `set-override` / `clear-override` write/remove any per-game override the GUI dropdowns expose:
+  `bitness`, `api`, `channel`, `folder`, `vulkan-path`, `custom-reshade`, `shader-mode`,
+  `shader-selection`, `addon-mode`, `addon-selection`, `dxvk-variant`, `lilium-preset`,
+  `os-variant`, `os-nightly`, `nr-*`, `fg-*`, `streamline`, `fsr-fix`, `dgvoodoo-version`,
+  `engine-version`, `hdr-toggle`, `res-toggle`, `wiki-exclude`, `normal-reshade`, `rs-asi`,
+  `exclude-<component>`, `os-deploy-*`, `dgvoodoo-standalone`. `--value auto` clears.
 - `reset-overrides` clears 45 override groups, matching the GUI's Reset Overrides data layer:
   name mapping, game rename, paths, ReShade channel/custom DLL, shader mode/selection, addon
   mode/selection, UE-Extended, launch, HDR/resolution toggles, DXVK, OptiScaler/NR, update-all
@@ -1417,7 +1425,8 @@ Everything below was executed on 2026-11-05 on the test machine.
 | In-game overlay | Home, Add-ons, Settings, ReLimiter (all sections), RenoDX (Simple + Intermediate) captured |
 | GUI compatibility | RHI relaunched after CLI installs, built the game's driver-profile section, closed cleanly; only a pre-existing WindowsApps access error and a caught cancellation from closing during startup scan |
 | Published build | Release publish succeeded; spot checks passed |
-| 2026-11-08 parity batch | `config list/get/set/unset`, `game set-launch/reset-launch`, `set-wiki-name/reset-wiki-name`, `reset-overrides`, `renodx ue-extended`; verify suite 45/45 |
+| 2026-11-08 parity batch | `config list/get/set/unset`, `game set-launch/reset-launch`, `set-wiki-name/reset-wiki-name`, `reset-overrides`, `renodx ue-extended`; verify suite 47/47 |
+| 2026-11-08 multi-game live run | ReShade 64/32/OpenGL, RenoDX Unity/Unreal/UE-Extended, RE Framework, ReLimiter, DC, OptiScaler, ASI, DLSS Enabler, FG 20/30, MFG40, Encore, dgVoodoo, DXVK 32-bit, shaders, addons, preset, HDR, NVIDIA, set-name/set-dll/set-override; 47/47 |
 
 Not executed live (deliberately): NVIDIA writes, HDR on/off, resolution change, vibrance set,
 Vulkan layer install, and installation of the extras proxy DLLs. All have dry-run coverage.
@@ -1680,7 +1689,7 @@ status
 config list|get|set|unset
 library list|show|refresh
 game add|remove|launch|favourite|unfavourite|hide|unhide|set-path
-game set-launch|reset-launch|set-wiki-name|reset-wiki-name|set-name|set-dll|reset-dll|reset-overrides
+game set-launch|reset-launch|set-wiki-name|reset-wiki-name|set-name|set-dll|reset-dll|set-override|clear-override|reset-overrides
 reshade install|update|uninstall
 reshade|renodx|relimiter|display-commander|optiscaler ini-list|ini-get|ini-set
 shaders list|install|remove

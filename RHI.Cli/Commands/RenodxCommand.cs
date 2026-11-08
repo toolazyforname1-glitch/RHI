@@ -58,8 +58,11 @@ internal static class RenodxCommand
                 var mod = detection.MatchGame(detected, wikiMods, names.NameMappings);
                 var matchedWiki = mod != null;
 
-                if (mod == null)
+                if (mod == null || (mod.SnapshotUrl == null && mod.SnapshotUrl32 == null))
+                {
                     mod = GenericFor(ctx, await ResolveUeExtendedUrlAsync(sp, names, ctx));
+                    matchedWiki = false;
+                }
 
                 if (mod?.SnapshotUrl == null && mod?.SnapshotUrl32 == null)
                     return CliOutput.Fail(command, "NO_MOD",
