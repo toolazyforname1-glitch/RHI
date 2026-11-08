@@ -120,6 +120,7 @@ All mutating verbs require `--yes`; all support `--dry-run`.
 `Death in the Water 2` (Unity, DX11, 64-bit):
 - `tools\verify-rhictl.ps1` → **47/47** (config, reset-overrides and set-launch checks added 2026-11-08)
 - Live 2026-11-08: ReShade (64-bit, 32-bit, OpenGL), RenoDX (Unity, generic Unreal, UE-Extended), RE Framework, ReLimiter, Display Commander, OptiScaler, ASI, DLSS Enabler, 20/30 FG, MFG40, RTX Encore, dgVoodoo, DXVK 32-bit, shaders, addons, preset deploy, HDR, NVIDIA get/set/preset/override, set-name, set-dll/reset-dll, set-override/clear-override, reset-overrides
+- Live 2026-11-08 (2): Portal RTX DLSS RR/FG/NR/SR swap + restore; Jusant DLSS SR + DOF Fix + RenoDX; Thumper Luma + dgVoodoo + DX9 ReShade; Quake II RTX Vulkan status (install needs elevation)
 - ReShade 6.8.0 → `dxgi.dll`
 - RenoDX generic Unity 26.1014.1445 → `renodx-unityengine.addon64`
 - ReLimiter v3.3.5 → `relimiter.addon64`

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using RenoDXCommander.Services;
 
@@ -92,8 +93,11 @@ internal static class DlssCommand
 
                 await dlss.FetchManifestAsync();
                 var versions = VersionsFor(dlss, component);
-                if (versions.Count > 0 && !versions.Contains(version, StringComparer.OrdinalIgnoreCase))
-                    CliOutput.Warn($"'{version}' is not in the known {component} list; passing it through anyway.");
+                var resolved = ResolveVersion(versions, version);
+                if (versions.Count > 0 && !versions.Contains(resolved, StringComparer.OrdinalIgnoreCase))
+                    CliOutput.Warn($"'{resolved}' is not in the known {component} list; passing it through anyway.");
+                if (!resolved.Equals(version, StringComparison.OrdinalIgnoreCase))
+                    CliOutput.Detail($"resolved version '{version}' to '{resolved}'");
 
                 if (!args.Yes && !args.DryRun)
                     return CliOutput.Fail(command, "CONFIRMATION_REQUIRED",
@@ -114,10 +118,15 @@ internal static class DlssCommand
                     return CliOutput.Ok(command, new { dryRun = true, component, version, target });
                 }
 
-                await SwapAsync(dlss, component, target, version, ctx);
+                await SwapAsync(dlss, component, target, resolved, ctx);
 
-                CliOutput.Human(() => Console.WriteLine($"{component} set to {version} in '{ctx.Name}'."));
-                return CliOutput.Ok(command, new { component, version, target });
+                var afterVersion = TryReadFileVersion(target);
+                if (afterVersion != null && !VersionsEqual(resolved, afterVersion))
+                    return CliOutput.Fail(command, "SWAP_FAILED",
+                        $"Requested {resolved}, but '{target}' still reports {afterVersion}.", ExitCodes.Failed);
+
+                CliOutput.Human(() => Console.WriteLine($"{component} set to {resolved} in '{ctx.Name}'."));
+                return CliOutput.Ok(command, new { component, version = resolved, target });
             }
 
             case "restore":
@@ -254,5 +263,35 @@ internal static class DlssCommand
             "streamline" => dlss.SwapStreamlineAsync(target, version),
             _ => throw new InvalidOperationException($"Unsupported component '{component}'."),
         };
+    }
+
+    private static string ResolveVersion(IReadOnlyList<string> versions, string requested)
+    {
+        var exact = versions.FirstOrDefault(v => v.Equals(requested, StringComparison.OrdinalIgnoreCase));
+        if (exact != null) return exact;
+
+        var prefixed = versions.FirstOrDefault(v =>
+            v.StartsWith(requested + " ", StringComparison.OrdinalIgnoreCase) ||
+            v.Split(' ')[0].Equals(requested, StringComparison.OrdinalIgnoreCase));
+        return prefixed ?? requested;
+    }
+
+    private static string? TryReadFileVersion(string path)
+    {
+        try
+        {
+            var info = FileVersionInfo.GetVersionInfo(path);
+            return $"{info.FileMajorPart}.{info.FileMinorPart}.{info.FileBuildPart}.{info.FilePrivatePart}";
+        }
+        catch { return null; }
+    }
+
+    private static bool VersionsEqual(string requested, string actual)
+    {
+        var a = requested.Split(' ')[0];
+        var b = actual.Split(' ')[0];
+        return a.Equals(b, StringComparison.OrdinalIgnoreCase) ||
+               a.StartsWith(b + ".", StringComparison.OrdinalIgnoreCase) ||
+               b.StartsWith(a + ".", StringComparison.OrdinalIgnoreCase);
     }
 }

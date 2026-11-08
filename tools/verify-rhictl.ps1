@@ -10,6 +10,7 @@ $script:Installed = @{}
 try {
     $statusProbe = & $Exe status --game $Game --json 2>$null | Out-String | ConvertFrom-Json
     foreach ($c in $statusProbe.data.components) { $script:Installed[$c.key] = [bool]$c.installed }
+    $script:Engine = $statusProbe.data.game.engine
 } catch { }
 
 function Run-Check {
@@ -19,8 +20,14 @@ function Run-Check {
         [int[]]$Expected = @(0),
         [string]$ErrorCode = "",
         [switch]$Json,
-        [string]$SkipUnlessComponent = ""
+        [string]$SkipUnlessComponent = "",
+        [string[]]$SkipUnlessEngine = @()
     )
+
+    if ($SkipUnlessEngine.Count -gt 0 -and $script:Engine -notin $SkipUnlessEngine) {
+        $results.Add([pscustomobject]@{ Check = $Name; Exit = 0; Pass = $true; Detail = "skipped (engine $script:Engine)" })
+        return
+    }
 
     if ($SkipUnlessComponent -and -not $script:Installed[$SkipUnlessComponent]) {
         $results.Add([pscustomobject]@{ Check = $Name; Exit = 0; Pass = $true; Detail = "skipped ($SkipUnlessComponent not installed)" })
@@ -84,7 +91,7 @@ Run-Check "renodx ini-get"    @("renodx","ini-get","--game",$Game,"--section","r
 Run-Check "relimiter ini-list" @("relimiter","ini-list","--game",$Game,"--json") -Json -SkipUnlessComponent "relimiter"
 
 Run-Check "reshade install dry"        @("reshade","install","--game",$Game,"--dry-run","--json") -Json
-Run-Check "renodx install dry"         @("renodx","install","--game",$Game,"--dry-run","--json") -Json
+Run-Check "renodx install dry"         @("renodx","install","--game",$Game,"--dry-run","--json") -Json -SkipUnlessEngine @("Unreal","UnrealLegacy","Unity")
 Run-Check "relimiter install dry"      @("relimiter","install","--game",$Game,"--dry-run","--json") -Json
 Run-Check "display-commander dry"      @("display-commander","install","--game",$Game,"--dry-run","--json") -Expected @(0,2) -ErrorCode "CONFLICT"
 Run-Check "asi install dry"            @("asi","install","--game",$Game,"--dry-run","--json") -Json
@@ -98,8 +105,8 @@ Run-Check "optiscaler install dry"     @("optiscaler","install","--game",$Game,"
 Run-Check "reframework install dry"    @("reframework","install","--game",$Game,"--dry-run","--json") -Json
 Run-Check "dofix install dry"          @("dofix","install","--game",$Game,"--dry-run","--json") -Expected @(0,2) -ErrorCode "NOT_ELIGIBLE"
 Run-Check "preset deploy dry"          @("preset","deploy","--game",$Game,"--dry-run","--json") -Expected @(0,3) -ErrorCode "NO_PRESETS"
-Run-Check "renodx mode dry"            @("renodx","mode","--game",$Game,"--value","intermediate","--dry-run","--json") -Json
-Run-Check "renodx peak-nits dry"       @("renodx","peak-nits","--game",$Game,"--value","800","--dry-run","--json") -Json
+Run-Check "renodx mode dry"            @("renodx","mode","--game",$Game,"--value","intermediate","--dry-run","--json") -Json -SkipUnlessComponent "reshade"
+Run-Check "renodx peak-nits dry"       @("renodx","peak-nits","--game",$Game,"--value","800","--dry-run","--json") -Json -SkipUnlessComponent "reshade"
 Run-Check "update all dry"             @("update","all","--components","reshade","--game",$Game,"--dry-run","--json") -Json
 Run-Check "library refresh dry"        @("library","refresh","--dry-run","--json") -Json
 

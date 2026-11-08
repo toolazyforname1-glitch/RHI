@@ -66,7 +66,7 @@ It is not a parallel implementation and cannot silently diverge in behaviour.
 
 Root: `C:\Users\cattu\Documents\Directories\Denuvo\RHI`
 
-### New this session (untracked in git, app source untouched)
+### New this session (one documented DLSS timeout fix in the app source)
 
 | Path | Type | Purpose |
 |---|---|---|
@@ -1427,6 +1427,7 @@ Everything below was executed on 2026-11-05 on the test machine.
 | Published build | Release publish succeeded; spot checks passed |
 | 2026-11-08 parity batch | `config list/get/set/unset`, `game set-launch/reset-launch`, `set-wiki-name/reset-wiki-name`, `reset-overrides`, `renodx ue-extended`; verify suite 47/47 |
 | 2026-11-08 multi-game live run | ReShade 64/32/OpenGL, RenoDX Unity/Unreal/UE-Extended, RE Framework, ReLimiter, DC, OptiScaler, ASI, DLSS Enabler, FG 20/30, MFG40, Encore, dgVoodoo, DXVK 32-bit, shaders, addons, preset, HDR, NVIDIA, set-name/set-dll/set-override; 47/47 |
+| 2026-11-08 targeted DLSS/UE5/Luma run | Portal RTX RR/FG/NR swaps + restore, Jusant SR swap + DOF Fix + RenoDX, Thumper Luma/dgVoodoo/DX9 ReShade, Quake II RTX Vulkan status; 47/47 |
 
 Not executed live (deliberately): NVIDIA writes, HDR on/off, resolution change, vibrance set,
 Vulkan layer install, and installation of the extras proxy DLLs. All have dry-run coverage.

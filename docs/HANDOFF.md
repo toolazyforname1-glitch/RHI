@@ -50,7 +50,7 @@ app's real `Services/` + `Models/` source into a UI-free assembly, and `RHI.Cli`
 front-end over that. Every install, update, ini merge, shader deploy and driver write goes
 through the same service methods the GUI calls.
 
-The WinUI app is **untouched**. `git diff` on `RenoDXCommander/` against upstream is empty.
+The WinUI app is **almost untouched**: one deliberate service fix (`DlssStreamlineService.Swap.cs`, DLSS download timeout 120 s → 10 min) so large NR archives can finish; every other app file matches upstream.
 The installed app at `C:\Program Files\RHI` is the original binary (172,154,424 bytes,
 2026-11-03, v2.8.9.0).
 
@@ -181,6 +181,15 @@ TOTAL: 47  PASS: 47  FAIL: 0
 - `game set-name` round-trip; `set-dll`/`reset-dll` (`dxgi.dll`↔`d3d11.dll`); `set-override`
   channel/bitness/wiki/update-exclusion + clear; `reset-overrides`.
 
+**2026-11-08 second matrix (targeted 4):**
+- **Portal with RTX** — `dlss status` sees SR/RR/FG/NR; `set`+`restore` proven for RR
+  (`310.9.1`↔`310.9.16`), FG (`310.9.16`↔`310.9.1`) and NR (`310.9.16`↔`310.8.2`).
+- **Jusant** (UE5.2) — generic Unreal RenoDX `26.1104.1857`; DOF Fix install/uninstall; DLSS SR
+  swap `3.1.13`↔`310.9.16` + restore.
+- **Thumper** (DX9) — ReShade 6.8.0 `d3d9.dll`; Luma build 810 (48 files); dgVoodoo 2.87.6.
+- **Quake II RTX** (Vulkan) — `vulkan status` works; `vulkan install` correctly blocked with
+  `ELEVATION_REQUIRED` (exit 5) because the shell is not elevated.
+
 Two checks (`renodx ini-get`, `relimiter ini-list`) **skip with a pass** when the component is not
 installed in the target game, so a cleaned game still reports a meaningful green. Three checks are
 **state-dependent** and legitimately return non-zero:
@@ -310,12 +319,13 @@ merge invalidated it; the fix commit exists because of that lesson.
 | 10 | No isolated state directory | CLI and GUI share `%LOCALAPPDATA%\RHI` | by design; `RHI_STATE_DIR` not implemented |
 | 11 | ReShade 6.8 screenshot *name* key unconfirmed | one doc line marked likely | path/format/overlay toggle confirmed |
 | 12 | Ultra+ is link-only | no download | same as the GUI |
-| 13 | Vulkan install/uninstall not live-tested | layer-only path returns elevation error unelevated | no Vulkan game in the collection |
-| 14 | DLSS `set`/`restore` not live-tested | no `nvngx` game in the collection | needs a DLSS title |
-| 15 | Luma not live-tested | catalog exists (59 games), none owned | needs one Luma-supported title |
-| 16 | DOF Fix not live-tested | requires UE **5.0–5.6**; Stray is UE4 | needs a UE5 title |
-| 17 | FG / MFG / NR live paths untested | install/uninstall verified, effect unverified | needs a DLSS-FG game |
+| 13 | Vulkan install/uninstall not live-tested | layer-only path returns elevation error unelevated | status verified on Quake II RTX; install needs an elevated terminal |
+| 14 | ~~DLSS `set`/`restore` not live-tested~~ **done** | RR/FG/NR/SR swaps + restores verified | Portal RTX, Jusant |
+| 15 | ~~Luma not live-tested~~ **done** | install/uninstall verified | Thumper, build 810 |
+| 16 | ~~DOF Fix not live-tested~~ **done** | install/uninstall verified | Jusant (UE5.2), after the engine-hint fix |
+| 17 | FG / MFG effect not visually verified | file swaps verified; game not launched | visual proof only |
 | 18 | Per-game resolution toggle is system-wide | `res set` changes the display, not a game override; `ResToggleOverrides` is set via `game set-override --kind res-toggle` | by design |
+| 19 | Feeder addon has no CLI verb | GUI-only "Install Feeder Addon"; NR deployment from the CLI needs it | last GUI action without a terminal equivalent |
 
 ---
 
@@ -507,6 +517,14 @@ is unaffected; default unchanged.
     create an extensionless file.
 21. **ReLimiter install normalizes** the template's `[UltraLimiter]` to `[FrameLimiter]`; a fresh
     template has no keys, so `ini-get target_fps` is legitimately `KEY_NOT_FOUND` until set.
+22. **NR versions carry a GPU suffix** in the manifest (`310.8.2 (20/30/40/50)`); resolve the base
+    version to the display entry before swapping, or `FindDlssnrEntry` misses and the swap no-ops.
+23. **The shared DLSS download helper capped every archive at 120 s.** NR zips are ~250 MB and died
+    at ~95 MB; the cap is now 10 minutes (`DlssStreamlineService.Swap.cs`). Verify the post-swap
+    version with the numeric `FileMajorPart/Minor/Build/Private` parts — one NR build reports
+    `310.8.SF.0` as its version string while the numeric parts are correct.
+24. **DOF Fix needs a versioned engine hint** (`"Unreal Engine 5.2"`), not bare `"Unreal"`.
+    `GameContext.EngineHint` now carries `DetectUeVersion()` output.
 
 ---
 
@@ -583,7 +601,7 @@ same commit.
 ## 13. What not to do
 
 - **Do not edit `RenoDXCommander/`** unless a feature genuinely requires it. The fork's value is
-  that the app is untouched; every app edit widens the diff and risks the GUI.
+  that the app stays untouched except the documented DLSS timeout fix; every other app edit widens the diff and risks the GUI.
 - **Do not commit** `RHI-Setup.exe`, `bin/`, `obj/`, `dist/`, `%LOCALAPPDATA%\RHI`, or anything
   containing tokens/paths from the user's machine beyond what the docs already contain.
 - **Do not push to `origin`** (upstream). Push only to `fork`.
@@ -607,6 +625,7 @@ same commit.
 | `RHI.Cli/Commands/ConfigCommand.cs` | committed 2026-11-08 |
 | `RHI.Cli/Commands/GameOverridesReset.cs` | committed 2026-11-08 |
 | `RHI.Cli/Commands/GameOverridesSet.cs` | committed 2026-11-08 |
+| `RenoDXCommander/Services/DlssStreamlineService.Swap.cs` | **modified** — 120 s → 10 min DLSS download cap |
 | `RHI-CLI-Repo` | snapshot updated with `DragDropHandlerShim.cs` + `ExtrasCommand.cs`; not a git repo |
 | `ss tool\probe.ps1`, `ss tool\PROBE.md` | current universal versions |
 | `%LOCALAPPDATA%\RHI` | shared state; do not commit |

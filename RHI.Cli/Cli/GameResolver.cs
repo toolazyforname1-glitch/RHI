@@ -11,6 +11,7 @@ internal sealed class GameContext
     public required string Path { get; init; }
     public required string Store { get; init; }
     public required string Engine { get; init; }
+    public string EngineHint { get; init; } = "";
     public required GraphicsApiType Api { get; init; }
     public required HashSet<GraphicsApiType> AllApis { get; init; }
     public required bool Is32Bit { get; init; }
@@ -150,12 +151,21 @@ internal static class GameResolver
         var is32Bit = false;
         try { is32Bit = pe.DetectGameArchitecture(resolvedPath) == MachineType.I386; } catch { /* best effort */ }
 
+        var engineHint = engine.ToString();
+        if (engine is EngineType.Unreal or EngineType.UnrealLegacy)
+        {
+            var ueVersion = GameDetectionService.DetectUeVersion(resolvedPath);
+            if (!string.IsNullOrWhiteSpace(ueVersion))
+                engineHint = $"Unreal Engine {ueVersion}";
+        }
+
         context = new GameContext
         {
             Name = name ?? new DirectoryInfo(resolvedPath).Name,
             Path = resolvedPath,
             Store = string.IsNullOrWhiteSpace(store) ? "Unknown" : store,
             Engine = engine.ToString(),
+            EngineHint = engineHint,
             Api = api,
             AllApis = allApis,
             Is32Bit = is32Bit,

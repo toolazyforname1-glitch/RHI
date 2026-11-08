@@ -455,7 +455,7 @@ public partial class DlssStreamlineService
             Directory.CreateDirectory(cacheDir);
             var tempZip = Path.Combine(cacheDir, "download.zip.tmp");
 
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(120));
+            using var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
             using var response = await _http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cts.Token).ConfigureAwait(false);
             if (!response.IsSuccessStatusCode)
             {
@@ -509,7 +509,7 @@ public partial class DlssStreamlineService
             Directory.CreateDirectory(cacheDir);
             var tempZip = Path.Combine(cacheDir, "download.zip.tmp");
 
-            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(120));
+            using var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
             using var response = await _http.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cts.Token).ConfigureAwait(false);
             if (!response.IsSuccessStatusCode)
             {

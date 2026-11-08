@@ -89,9 +89,9 @@ internal static class AuxComponentCommand
             return CliOutput.Ok(command, new { removed });
         }
 
-        if (!dof.IsGameEligible(ctx.Engine, ctx.Is32Bit, ctx.Name))
+        if (!dof.IsGameEligible(ctx.EngineHint, ctx.Is32Bit, ctx.Name))
             return CliOutput.Fail(command, "NOT_ELIGIBLE",
-                $"DOF Fix does not apply to '{ctx.Name}' (engine={ctx.Engine}, 32-bit={ctx.Is32Bit}).", ExitCodes.Usage);
+                $"DOF Fix does not apply to '{ctx.Name}' (engine={ctx.EngineHint}, 32-bit={ctx.Is32Bit}).", ExitCodes.Usage);
 
         if (args.DryRun) return DryRun(command, ctx, "DOF Fix", args.Verb);
 
