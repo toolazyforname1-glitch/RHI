@@ -18,7 +18,7 @@ Legend: **yes** = CLI verb exists · **dry** = implemented, verified only with `
 | Links | `LinksBtn` | todo |
 | Help | `SupportBtn` | n/a |
 | Donate | `DonateBtn` | n/a |
-| Settings | `SettingsBtn` | `config` (partial) |
+| Settings | `SettingsBtn` | `config list|get|set|unset` |
 | Filter games… | `SearchBox` | `library list` + shell filtering |
 | + (add game) | `AddGameBtn` | `game add --path <dir>` |
 
@@ -57,7 +57,7 @@ Legend: **yes** = CLI verb exists · **dry** = implemented, verified only with `
 | GUI | AutomationId | rhictl |
 |---|---|---|
 | Install / Reinstall / Update | `DetailRdxInstallBtn` | `renodx install --yes`, `renodx update --yes` |
-| UE-Extended toggle | `DetailUeExtendedBtn` | todo |
+| UE-Extended toggle | `DetailUeExtendedBtn` | `renodx ue-extended --value on|off` |
 | Uninstall | `DetailRdxDeleteBtn` | `renodx uninstall --yes` |
 | Status / version | — | `status` |
 
@@ -103,26 +103,27 @@ Everything else in this group now maps to a CLI verb:
 | Restore DLSS/SL | `dlss restore --game <n>` |
 | DLSS render scale | `dlss render-scale --game <n> --component sr|rr [--value <pct>]` |
 | Change install folder | `game set-path --game <n> --path <dir>` |
-| Reset overrides | todo |
+| Reset overrides | `game reset-overrides --game <n>` |
 
 ## Overrides panel
 
 | GUI | rhictl |
 |---|---|
-| Game name / Wiki mod name / Reset name | todo |
-| DLL name dropdowns / Reset DLL names | `reshade --dll` covers ReShade only |
-| Shader mode + Choose components… | `reshade --shaders/--packs` covers ReShade only |
+| Game name / Wiki mod name / Reset name | `game set-name`, `game set-wiki-name`, `game reset-wiki-name` |
+| DLL name dropdowns / Reset DLL names | `game set-dll`, `game reset-dll`; `reshade --dll` at install |
+| Shader mode + Choose components… | `reshade --shaders/--packs` covers ReShade only; `game reset-overrides` resets per-game mode |
 | Select ReShade Preset | `preset deploy --game <n> --file a.ini [--with-shaders]` |
-| Launch exe / Launch arguments / Reset | todo |
+| Launch exe / Launch arguments / Reset | `game set-launch --exe/--args`, `game reset-launch` |
 | ReShade channel | `reshade --channel` |
-| Keep ReShade.ini Updated | todo |
+| Keep ReShade.ini Updated | `config get|set --key …` |
 
 ## Settings pages
 
 The Settings panel was not opened during the dump (the UIA run captured the main window with a
 game selected). Settings tabs visible in the source: General, Appearance, ReShade & RenoDX,
 DLSS & Streamline, NVIDIA, Accounts & Data, Tools & Maintenance, About.
-Shared settings are read by the CLI through `SettingsViewModel`; there is no `settings set` command yet.
+Shared settings are read and written by the CLI through `config list|get|set|unset` (atomic
+`SettingsFile.Update`), matching the Settings pages key by key.
 
 ## Summary
 
@@ -131,5 +132,5 @@ Shared settings are read by the CLI through `SettingsViewModel`; there is no `se
   20/30 FG, RTX Encore, MFG Unlocker, dgVoodoo2, ReLimiter, Display Commander, shaders, presets,
   `update all`, game launch, HDR/resolution/vibrance, NVIDIA presets/overrides/global settings,
   DLDSR, and an MCP server.
-- **Remaining UI-only:** reset-overrides, Ultra+ download (vendor site), and purely visual settings
-  (theme, layout, section order).
+- **Remaining UI-only:** Ultra+ download (vendor site) and purely visual settings (theme, layout,
+  section order).

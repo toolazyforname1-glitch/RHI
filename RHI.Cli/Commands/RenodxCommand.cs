@@ -6,6 +6,9 @@ namespace RenoDXCommander.Cli.Commands;
 
 internal static class RenodxCommand
 {
+    private const string UeExtendedFallbackUrl =
+        "https://marat569.github.io/renodx/renodx-ue-extended.addon64";
+
     public static async Task<int> RunAsync(Args args, IServiceProvider sp)
     {
         var command = $"renodx.{args.Verb}";
@@ -56,7 +59,7 @@ internal static class RenodxCommand
                 var matchedWiki = mod != null;
 
                 if (mod == null)
-                    mod = GenericFor(ctx);
+                    mod = GenericFor(ctx, await ResolveUeExtendedUrlAsync(sp, names, ctx));
 
                 if (mod?.SnapshotUrl == null && mod?.SnapshotUrl32 == null)
                     return CliOutput.Fail(command, "NO_MOD",
@@ -143,19 +146,89 @@ internal static class RenodxCommand
                 return CliOutput.Ok(command, new { removed = true, addon = record.AddonFileName });
             }
 
+            case "ue-extended":
+            {
+                var raw = (args.Get("value") ?? args.Positional.FirstOrDefault() ?? "").Trim().ToLowerInvariant();
+                var enable = raw is "on" or "true" or "1" or "enable";
+                var disable = raw is "off" or "false" or "0" or "disable";
+                if (!enable && !disable)
+                    return CliOutput.Fail(command, "BAD_VALUE",
+                        "--value must be on or off.", ExitCodes.Usage);
+
+                if (!string.Equals(ctx.Engine, "Unreal", StringComparison.OrdinalIgnoreCase))
+                    return CliOutput.Fail(command, "NOT_ELIGIBLE",
+                        $"UE-Extended applies to Unreal Engine games only (engine={ctx.Engine}).", ExitCodes.Usage);
+
+                if (!args.Yes && !args.DryRun)
+                    return CliOutput.Fail(command, "CONFIRMATION_REQUIRED",
+                        "This changes the RenoDX source used for the game. Re-run with --yes (or --dry-run).", ExitCodes.Usage);
+
+                if (CliGuards.CheckMutation(args, ctx, out var ueGuard))
+                    return CliOutput.Fail(command, "BLOCKED", ueGuard, ExitCodes.GameRunning);
+
+                CliState.EnsureInitialized(sp);
+                var ueNames = sp.GetRequiredService<IGameNameService>();
+
+                if (args.DryRun)
+                {
+                    CliOutput.Human(() => Console.WriteLine(
+                        $"Would turn UE-Extended {(enable ? "on" : "off")} for '{ctx.Name}'."));
+                    return CliOutput.Ok(command, new { dryRun = true, game = ctx.Name, ueExtended = enable });
+                }
+
+                if (enable)
+                {
+                    ueNames.UeExtendedGames.Add(ctx.Name);
+                    ueNames.UeExtendedOptOutGames.Remove(ctx.Name);
+                }
+                else
+                {
+                    ueNames.UeExtendedGames.Remove(ctx.Name);
+                    ueNames.UeExtendedOptOutGames.Add(ctx.Name);
+                }
+                CliState.Save(sp);
+
+                CliOutput.Human(() => Console.WriteLine(
+                    $"UE-Extended {(enable ? "enabled" : "disabled")} for '{ctx.Name}'. " +
+                    (enable ? "Run 'rhictl renodx install' to deploy the extended addon." : "")));
+                return CliOutput.Ok(command, new { game = ctx.Name, ueExtended = enable });
+            }
+
             default:
                 return CliOutput.Fail(command, "UNKNOWN_VERB",
-                    "Unknown renodx verb. Try: install, update, uninstall.", ExitCodes.Usage);
+                    "Unknown renodx verb. Try: install, update, uninstall, ue-extended.", ExitCodes.Usage);
         }
     }
 
-    private static GameMod? GenericFor(GameContext ctx) => ctx.Engine switch
+    private static async Task<string> ResolveUeExtendedUrlAsync(
+        IServiceProvider sp, IGameNameService names, GameContext ctx)
+    {
+        if (!string.Equals(ctx.Engine, "Unreal", StringComparison.OrdinalIgnoreCase) ||
+            !names.UeExtendedGames.Contains(ctx.Name))
+            return WikiService.GenericUnrealUrl;
+
+        try
+        {
+            var manifest = await sp.GetRequiredService<IManifestService>().FetchAsync();
+            if (manifest?.ComponentUrls?.TryGetValue("ueExtended", out var url) == true &&
+                !string.IsNullOrWhiteSpace(url))
+                return url;
+        }
+        catch (Exception ex)
+        {
+            CliOutput.Detail($"ueExtended manifest lookup failed, using built-in URL: {ex.Message}");
+        }
+
+        return UeExtendedFallbackUrl;
+    }
+
+    private static GameMod? GenericFor(GameContext ctx, string unrealUrl) => ctx.Engine switch
     {
         "Unreal" => new GameMod
         {
             Name = "Generic Unreal Engine",
             Maintainer = "ShortFuse",
-            SnapshotUrl = WikiService.GenericUnrealUrl,
+            SnapshotUrl = unrealUrl,
             Status = "?",
             IsGenericUnreal = true,
         },

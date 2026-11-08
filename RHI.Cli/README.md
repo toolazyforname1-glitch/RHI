@@ -37,13 +37,23 @@ Run:
 doctor
 paths
 status
+config list|get|set|unset --key <k> [--value <v>] [--show-secrets]
 library list|show|refresh
 game add|remove|launch|favourite|unfavourite|hide|unhide|set-path
+game set-launch --game <n> [--exe <path>] [--args "..."]
+game reset-launch --game <n>
+game set-wiki-name --game <n> --name <wiki name>
+game reset-wiki-name --game <n>
+game set-name --game <n> --name <new display name>
+game set-dll --game <n> [--reshade <file.dll>] [--dc <file.dll>] [--os <file.dll>]
+game reset-dll --game <n>
+game reset-overrides --game <n>
 reshade install|update|uninstall
 reshade|renodx|relimiter|display-commander|optiscaler ini-list|ini-get|ini-set
 shaders list|install|remove
 addons list|install|remove
 renodx install|update|uninstall|mode|peak-nits
+renodx ue-extended --game <n> --value on|off
 luma list|install|uninstall
 dlss status|versions|set|restore|scales|render-scale
 reframework install|uninstall
@@ -70,7 +80,7 @@ mcp serve
 ```
 
 Global flags: `--json`, `--dry-run`, `--yes`, `--force`, `--verbose`, `--game`, `--path`,
-`--help`.
+`--show-secrets`, `--help`.
 
 ## Architecture
 

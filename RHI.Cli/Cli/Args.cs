@@ -9,7 +9,7 @@ internal sealed class Args
 {
     private static readonly HashSet<string> BoolFlags = new(StringComparer.OrdinalIgnoreCase)
     {
-        "json", "dry-run", "yes", "force", "verbose", "no-color", "help",
+        "json", "dry-run", "yes", "force", "verbose", "no-color", "help", "show-secrets",
     };
 
     public string Group { get; private init; } = "";

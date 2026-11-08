@@ -41,8 +41,8 @@ rhictl renodx install --game "Your Game" --yes
 | Environment diagnostics (`doctor`, `paths`) | partial (About/Tools) | ✅ one command |
 | Update only selected components | ❌ (Update All) | ✅ `update all --components` |
 | Scriptable guards (`--yes`, `--force`, exit codes) | dialogs | ✅ |
-| Settings-page editing from CLI | ✅ | ❌ (known gap) |
-| Reset overrides from CLI | ✅ | ❌ (known gap) |
+| Settings-page editing from CLI | ✅ | ✅ `config list/get/set/unset` |
+| Reset overrides from CLI | ✅ | ✅ `game reset-overrides` |
 | Background auto-update / tray / single-instance UX | ✅ | ❌ (GUI-only) |
 | Ultra+ download | link-only | link-only |
 
@@ -51,7 +51,7 @@ rhictl renodx install --game "Your Game" --yes
 | Path | What |
 |---|---|
 | `RHI.Core/` | headless compilation of `RenoDXCommander/Services` + `Models` (linked at build time) and the UI shims |
-| `RHI.Cli/` | the `rhictl` console app, ~85 verbs across 21 command groups |
+| `RHI.Cli/` | the `rhictl` console app, ~95 verbs across 22 command groups |
 | `docs/EVERYTHING.md` | full project reference |
 | `docs/IN-GAME-MENU.md`, `docs/IN-GAME-UI.md` | in-game overlay and settings research |
 | `docs/GUI-INVENTORY.md`, `docs/GUI-INVENTORY-raw.txt` | GUI → CLI coverage matrix and raw accessibility dump |

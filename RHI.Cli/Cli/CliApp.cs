@@ -55,6 +55,7 @@ internal static class CliApp
                 "mcp" => await McpCommand.RunAsync(args),
                 "library" => await LibraryCommand.RunAsync(args, services),
                 "game" => await GameCommand.RunAsync(args, services),
+                "config" => await ConfigCommand.RunAsync(args, services),
                 _ => CliOutput.Fail($"{args.Group}.{args.Verb}",
                     "UNKNOWN_COMMAND", $"Unknown command '{args.Group}'. Run 'rhictl help'.", ExitCodes.Usage),
             };
@@ -94,6 +95,7 @@ internal static class CliApp
               renodx install|update|uninstall --game <n>
               renodx mode --game <n> --value simple|intermediate|advanced
               renodx peak-nits --game <n> --value <nits>
+              renodx ue-extended --game <n> --value on|off
               luma list|install|uninstall --game <n>
               shaders list | shaders install|remove --game <n> --packs a,b
               addons list | addons install|remove --game <n> --name <package>|--section <id>
@@ -115,6 +117,15 @@ internal static class CliApp
               game remove --game <n>     remove a game entry
               game favourite|unfavourite|hide|unhide --game <n>
               game set-path --game <n> --path <dir>
+              game set-launch --game <n> [--exe <path>] [--args "..."]
+              game reset-launch --game <n>
+              game set-wiki-name --game <n> --name <wiki name>
+              game reset-wiki-name --game <n>
+              game set-name --game <n> --name <new display name>
+              game set-dll --game <n> [--reshade <file.dll>] [--dc <file.dll>] [--os <file.dll>]
+              game reset-dll --game <n>
+              game reset-overrides --game <n>
+              config list|get|set|unset --key <k> [--value <v>] [--show-secrets]
               reshade|renodx|relimiter|display-commander|optiscaler ini-list|ini-get|ini-set
                      --section <s> --key <k> [--value <v>]
             """);

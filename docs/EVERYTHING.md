@@ -45,7 +45,7 @@ What exists now:
 - **`RHI.Core`** — a class library that compiles RHI's real `Services/` + `Models/` source
   (157 service files, ~45,000 LOC) into a UI-free assembly, with five small shims for the
   handful of UI-shaped types the services touch.
-- **`RHI.Cli`** — a console app (`rhictl.exe`) with ~60 verbs covering library management,
+- **`RHI.Cli`** — a console app (`rhictl.exe`) with ~95 verbs covering library management,
   ReShade, RenoDX, Luma, DLSS/Streamline, OptiScaler, DXVK, RE Framework, DOF Fix, ASI Loader,
   DLSS Enabler, 20/30 FG unlock, RTX Encore, MFG Unlocker, dgVoodoo2, Ultra+, ReLimiter,
   Display Commander, shader packs, addon packs, presets, Vulkan ReShade, NVIDIA driver settings,
@@ -276,6 +276,7 @@ documented interface uses named options.
 | `--help` | prints help | implemented |
 | `--game <name>` | target a library game | implemented |
 | `--path <dir>` | target a folder directly (bypasses library name) | implemented |
+| `--show-secrets` | show token-like settings values in `config list/get` | implemented |
 | `--store <s>` | parsed as an option; **not** used for disambiguation yet | parsed only |
 | `--timeout <s>` | **not implemented** | — |
 
@@ -800,6 +801,59 @@ the CLI surface. Mutating tools add `--yes` automatically unless `dryRun` is set
 
 **Verified:** full handshake, `tools/list`, a `tools/call` to `rhi_status`, and `shutdown`.
 
+### 7.22 `config`
+
+```
+rhictl config list|get|set|unset --key <k> [--value <v>] [--show-secrets]
+```
+
+- Reads `settings.json` through `SettingsFile.Snapshot()`; writes through
+  `SettingsFile.Update(...)`, the same locked read-modify-write the GUI uses.
+- `config list` prints every key (128 observed); token-like keys are redacted unless
+  `--show-secrets`.
+- `config set/unset` require `--yes` (or `--dry-run`) and refuse while `RHI.exe` runs unless
+  `--force`.
+- Unknown keys are allowed on `set` (the settings file is an open dictionary) and reported as
+  "absent -> value"; `get`/`unset` of a missing key exit 3.
+
+### 7.23 Per-game overrides (`game`)
+
+```
+rhictl game set-launch --game <n> [--exe <path>] [--args "..."]
+rhictl game reset-launch --game <n>
+rhictl game set-wiki-name --game <n> --name <wiki name>
+rhictl game reset-wiki-name --game <n>
+rhictl game set-name --game <n> --name <new display name>
+rhictl game set-dll --game <n> [--reshade <file.dll>] [--dc <file.dll>] [--os <file.dll>]
+rhictl game reset-dll --game <n>
+rhictl game reset-overrides --game <n>
+```
+
+- `set-launch` writes `LaunchExeOverrides` / `LaunchArgsOverrides` (name-keyed); `reset-launch`
+  removes both.
+- `set-wiki-name` / `reset-wiki-name` write/remove `NameMappings` via `AddNameMapping` /
+  `RemoveNameMapping`.
+- `set-name` renames through `GameNameService.RenameGame`, migrating settings, composite keys,
+  DLL overrides, install records and the library entry.
+- `set-dll` enables/updates the ReShade/DC DLL override (`EnableDllOverride` /
+  `UpdateDllOverrideNames`) and the OptiScaler override (`SetOsDllOverride`); `reset-dll` reverts
+  the files with `DisableDllOverride`.
+- `reset-overrides` clears 45 override groups, matching the GUI's Reset Overrides data layer:
+  name mapping, game rename, paths, ReShade channel/custom DLL, shader mode/selection, addon
+  mode/selection, UE-Extended, launch, HDR/resolution toggles, DXVK, OptiScaler/NR, update-all
+  exclusions, wiki exclusion, and the DLL override (reverted on disk). It also replicates the
+  button's side effects: reinstalls ReShade on the global channel when a channel override existed,
+  and removes a tracked DXVK install.
+
+### 7.24 `renodx ue-extended`
+
+```
+rhictl renodx ue-extended --game <n> --value on|off
+```
+
+Persists `UeExtendedGames` / `UeExtendedOptOutGames`; `renodx install` then uses the extended
+addon URL (manifest `componentUrls.ueExtended`, falling back to the built-in URL). Unreal only.
+
 ---
 
 ## 8. Component technical reference
@@ -1238,7 +1292,7 @@ Source: live UI Automation dump of RHI 2.8.9 (359 elements). Full detail in
 | Refresh | `RefreshBtn` | `library refresh --yes` |
 | Shaders/Addons | `ShadersAddonsBtn` | `shaders list`, `addons list` |
 | Update All | `UpdateBtn` | `update all --yes` |
-| Settings | `SettingsBtn` | partial (`config` not implemented) |
+| Settings | `SettingsBtn` | `config list|get|set|unset` |
 | Search | `SearchBox` | `library list` + shell filtering |
 | Add game | `AddGameBtn` | `game add --path` |
 | Quick Start / Available Mods / Links / Help / Donate | — | docs / n/a |
@@ -1296,7 +1350,7 @@ Source: live UI Automation dump of RHI 2.8.9 (359 elements). Full detail in
 | Ultra+ | `ultraplus url --open` |
 | Deploy DLL / Quick Apply | per-component `--dll` |
 | Change install folder | `game set-path` |
-| Reset overrides | **not implemented** |
+| Reset overrides | `game reset-overrides` |
 
 ### Overrides / settings
 
@@ -1308,7 +1362,7 @@ Source: live UI Automation dump of RHI 2.8.9 (359 elements). Full detail in
 | Launch exe/args | `game launch --args`, exe from settings |
 | ReShade channel | `reshade --channel` |
 | Keep ReShade.ini updated | always `mergeIni: true` |
-| Settings pages | `config` **not implemented** (values are read through `SettingsViewModel` for installs) |
+| Settings pages | `config list|get|set|unset` (same `settings.json`) |
 
 ---
 
@@ -1363,6 +1417,7 @@ Everything below was executed on 2026-11-05 on the test machine.
 | In-game overlay | Home, Add-ons, Settings, ReLimiter (all sections), RenoDX (Simple + Intermediate) captured |
 | GUI compatibility | RHI relaunched after CLI installs, built the game's driver-profile section, closed cleanly; only a pre-existing WindowsApps access error and a caught cancellation from closing during startup scan |
 | Published build | Release publish succeeded; spot checks passed |
+| 2026-11-08 parity batch | `config list/get/set/unset`, `game set-launch/reset-launch`, `set-wiki-name/reset-wiki-name`, `reset-overrides`, `renodx ue-extended`; verify suite 45/45 |
 
 Not executed live (deliberately): NVIDIA writes, HDR on/off, resolution change, vibrance set,
 Vulkan layer install, and installation of the extras proxy DLLs. All have dry-run coverage.
@@ -1373,8 +1428,9 @@ Vulkan layer install, and installation of the extras proxy DLLs. All have dry-ru
 
 ### Functional gaps
 
-1. **Reset overrides** (GUI) has no CLI equivalent.
-2. **Settings pages** (GUI) are read-only from the CLI; there is no `config set` verb.
+1. ~~**Reset overrides** (GUI) has no CLI equivalent.~~ Done: `game reset-overrides`.
+2. ~~**Settings pages** (GUI) are read-only from the CLI; there is no `config set` verb.~~ Done:
+   `config list|get|set|unset`.
 3. **Vulkan layer install** is implemented but untested (needs elevation).
 4. **NVIDIA writes** are implemented but unexercised.
 5. **`vibrance` display enumeration** returns no displays on this machine/driver.
@@ -1591,8 +1647,8 @@ Authoritative files for every ini write. Paths are relative to
 
 ### High value
 
-1. `config get/set` for `settings.json` (hotkeys, screenshot path, shader selection, channel).
-2. `reset overrides` (clear per-game name/DLL/channel/shader/preset/launch overrides).
+1. ~~`config get/set` for `settings.json`~~ Done 2026-11-08: `config list|get|set|unset`.
+2. ~~`reset overrides`~~ Done 2026-11-08: `game reset-overrides`.
 3. In-process `update all` (avoid spawning `rhictl` per component).
 4. Capture RenoDX **Advanced** mode and OptiScaler / Display Commander in-game menus on a DX12
    title, then raise their confidence markers.
@@ -1621,13 +1677,15 @@ Authoritative files for every ini write. Paths are relative to
 doctor
 paths
 status
+config list|get|set|unset
 library list|show|refresh
 game add|remove|launch|favourite|unfavourite|hide|unhide|set-path
+game set-launch|reset-launch|set-wiki-name|reset-wiki-name|set-name|set-dll|reset-dll|reset-overrides
 reshade install|update|uninstall
 reshade|renodx|relimiter|display-commander|optiscaler ini-list|ini-get|ini-set
 shaders list|install|remove
 addons list|install|remove
-renodx install|update|uninstall|mode|peak-nits
+renodx install|update|uninstall|mode|peak-nits|ue-extended
 luma list|install|uninstall
 dlss status|versions|set|restore|scales|render-scale
 reframework install|uninstall
