@@ -525,6 +525,7 @@ internal static class GameCommand
 
                 CliState.EnsureInitialized(sp);
                 var dll = sp.GetRequiredService<IDllOverrideService>();
+                var aux = sp.GetRequiredService<IAuxInstallService>();
                 var existing = dll.GetDllOverride(ctx.Name);
 
                 if (!string.IsNullOrWhiteSpace(osName))
@@ -566,6 +567,9 @@ internal static class GameCommand
                     Source = ctx.Store,
                     Is32Bit = ctx.Is32Bit,
                 };
+                card.RsRecord = aux.FindRecord(ctx.Name, ctx.Path, "ReShade")
+                                ?? aux.FindRecord(ctx.Name, ctx.Path, "ReShadeNormal");
+                card.RsInstalledFile = card.RsRecord?.InstalledAs;
 
                 if (rsName != null || dcName != null)
                 {
@@ -615,12 +619,16 @@ internal static class GameCommand
 
                 if (had)
                 {
+                    var aux = sp.GetRequiredService<IAuxInstallService>();
                     var card = new GameCardViewModel
                     {
                         GameName = ctx.Name,
                         InstallPath = ctx.Path,
                         Source = ctx.Store,
                     };
+                    card.RsRecord = aux.FindRecord(ctx.Name, ctx.Path, "ReShade")
+                                    ?? aux.FindRecord(ctx.Name, ctx.Path, "ReShadeNormal");
+                    card.RsInstalledFile = card.RsRecord?.InstalledAs;
                     dll.DisableDllOverride(card);
                 }
                 dll.RemoveDllOverride(ctx.Name);

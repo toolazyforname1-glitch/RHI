@@ -118,6 +118,7 @@ All mutating verbs require `--yes`; all support `--dry-run`.
 
 `Death in the Water 2` (Unity, DX11, 64-bit):
 - `tools\verify-rhictl.ps1` → **45/45** (config, reset-overrides and set-launch checks added 2026-11-08)
+- Live 2026-11-08: `reshade install/uninstall`, `renodx install/uninstall`, `relimiter install/uninstall`, `game set-name` round-trip, `game set-dll`/`reset-dll` round-trip, `game reset-overrides`
 - ReShade 6.8.0 → `dxgi.dll`
 - RenoDX generic Unity 26.1014.1445 → `renodx-unityengine.addon64`
 - ReLimiter v3.3.5 → `relimiter.addon64`
@@ -130,7 +131,7 @@ All mutating verbs require `--yes`; all support `--dry-run`.
   edits them through `reshade|renodx|relimiter|display-commander|optiscaler ini-set`.
 - The only unconfirmed key is ReShade 6.8's screenshot *name* template (`[SCREENSHOT]`); path,
   format and overlay-shot toggle are confirmed.
-- The ReLimiter template ships `[UltraLimiter]` while all writers target `[FrameLimiter]`.
+- The ReLimiter template ships `[UltraLimiter]` while all writers target `[FrameLimiter]`; CLI install renames it.
 
 - Vulkan ReShade install requires an elevated terminal (`vulkan install` refuses otherwise) and was
   verified only with `status`/dry-run.

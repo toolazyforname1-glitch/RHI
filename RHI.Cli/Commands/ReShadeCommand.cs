@@ -50,7 +50,7 @@ internal static class ReShadeCommand
                         string.Equals(args.Get("channel"), "no-addons", StringComparison.OrdinalIgnoreCase);
 
         var channel = ResolveChannel(args, names, settings, ctx, key, useNormal);
-        var dll = args.Get("dll") ?? ReShadeDllName.Resolve(ctx.AllApis);
+        var dll = NormalizeDll(args.Get("dll")) ?? ReShadeDllName.Resolve(ctx.AllApis);
         var packs = ResolvePacks(args, settings);
 
         var plan = new
@@ -217,6 +217,11 @@ internal static class ReShadeCommand
         }
     }
 
+    private static string? NormalizeDll(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return null;
+        return value.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ? value : value + ".dll";
+    }
     private static string ResolveChannel(
         Args args,
         IGameNameService names,

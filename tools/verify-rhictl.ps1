@@ -79,7 +79,7 @@ Run-Check "set-name dry"      @("game","set-name","--game",$Game,"--name","Cli R
 Run-Check "set-dll dry"       @("game","set-dll","--game",$Game,"--reshade","dxgi.dll","--dry-run","--json") -Json
 Run-Check "reset-dll dry"     @("game","reset-dll","--game",$Game,"--dry-run","--json") -Json
 Run-Check "renodx ini-get"    @("renodx","ini-get","--game",$Game,"--section","renodx-preset1","--key","toneMapPeakNits","--json") -Json -SkipUnlessComponent "renodx"
-Run-Check "relimiter ini-get" @("relimiter","ini-get","--game",$Game,"--section","FrameLimiter","--key","target_fps","--json") -Json -SkipUnlessComponent "relimiter"
+Run-Check "relimiter ini-list" @("relimiter","ini-list","--game",$Game,"--json") -Json -SkipUnlessComponent "relimiter"
 
 Run-Check "reshade install dry"        @("reshade","install","--game",$Game,"--dry-run","--json") -Json
 Run-Check "renodx install dry"         @("renodx","install","--game",$Game,"--dry-run","--json") -Json

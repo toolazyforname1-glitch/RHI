@@ -167,7 +167,12 @@ Expected tail:
 TOTAL: 45  PASS: 45  FAIL: 0
 ```
 
-Two checks (`renodx ini-get`, `relimiter ini-get`) **skip with a pass** when the component is not
+**Live-verified 2026-11-08:** `reshade install` → `uninstall` → `install`, `renodx install` →
+`uninstall`, `relimiter install` → `uninstall` (with `[FrameLimiter]` normalization and an
+`ini-set`/`ini-get` round-trip), `game set-name` round-trip, `game set-dll dxgi.dll→d3d11.dll` →
+`reset-dll`, and `game reset-overrides` clearing 4 entries.
+
+Two checks (`renodx ini-get`, `relimiter ini-list`) **skip with a pass** when the component is not
 installed in the target game, so a cleaned game still reports a meaningful green. Three checks are
 **state-dependent** and legitimately return non-zero:
 
@@ -462,7 +467,7 @@ is unaffected; default unchanged.
    concrete `DofFixService`.
 7. **`Rtx40MfgService.EnsureStagingAsync()` takes no progress argument.**
 8. **NVAPI has no NR driver-override setter**; only sr/rr/fg.
-9. **`relimiter.ini` template ships `[UltraLimiter]`; all writers use `[FrameLimiter]`.**
+9. **`relimiter.ini` template ships `[UltraLimiter]`; all writers use `[FrameLimiter]`.** CLI install renames the section.
 10. **RenoDX LUT warning**: `colorGradeInternalLUTShaper != 0` without the output shader produces
     "Missing output shader"; set it to `0`.
 11. **OptiScaler top-level keys** (`ShortcutKey`, `LoadReshade`, `LoadAsiPlugins`) have **no

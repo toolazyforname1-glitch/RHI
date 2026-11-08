@@ -212,7 +212,7 @@ Captured: `10-relimiter-main.png` (main), `16-relimiter-osd.png`, `17-relimiter-
 `19-relimiter-advanced2.png`.
 
 Persistence: **`relimiter.ini`**, section **`[FrameLimiter]`** — note the shipped template only
-contains `[UltraLimiter]`, but RHI and the addon write `[FrameLimiter]`.
+contains `[UltraLimiter]`, but RHI and the addon write `[FrameLimiter]`; the CLI renames it on install.
 
 ## Frame pacing
 
@@ -315,7 +315,7 @@ running unless `--force`.
 ## Known traps
 
 1. `relimiter.ini` template ships `[UltraLimiter]` (empty) but every writer targets
-   `[FrameLimiter]`.
+   `[FrameLimiter]`. The CLI renames it on install.
 2. `colorGradeInternalLUTShaper` non-zero without a matching output shader produces the
    "Missing output shader" warning; set `0` for Vanilla.
 3. `SettingsMode` is 0/1/2 = Simple/Intermediate/Advanced (1 verified, 2 likely).

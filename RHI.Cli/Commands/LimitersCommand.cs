@@ -132,6 +132,9 @@ internal static class LimitersCommand
             CliDownloads.WriteMeta(UlMetaPath, version, ctx.Is32Bit);
 
         AuxInstallService.DeployUlIniIfAbsent(ctx.Path);
+        NormalizeUlIni(Path.Combine(ctx.Path, "relimiter.ini"));
+        if (!PathsEqual(ctx.Path, deployPath))
+            NormalizeUlIni(Path.Combine(deployPath, "relimiter.ini"));
 
         if (settings.UlSharedPresets)
         {
@@ -279,6 +282,24 @@ internal static class LimitersCommand
         try { if (File.Exists(path)) File.Delete(path); }
         catch (Exception ex) { CliOutput.Warn($"could not delete {path}: {ex.Message}"); }
     }
+
+    private static void NormalizeUlIni(string path)
+    {
+        try
+        {
+            if (!File.Exists(path)) return;
+            var text = File.ReadAllText(path);
+            if (text.IndexOf("[UltraLimiter]", StringComparison.OrdinalIgnoreCase) < 0) return;
+            File.WriteAllText(path, text.Replace("[UltraLimiter]", "[FrameLimiter]", StringComparison.OrdinalIgnoreCase));
+        }
+        catch (Exception ex) { CliOutput.Warn($"could not normalize {path}: {ex.Message}"); }
+    }
+
+    private static bool PathsEqual(string a, string b) =>
+        string.Equals(
+            Path.GetFullPath(a).TrimEnd(Path.DirectorySeparatorChar),
+            Path.GetFullPath(b).TrimEnd(Path.DirectorySeparatorChar),
+            StringComparison.OrdinalIgnoreCase);
 
     private static int DryRun(string command, GameContext ctx, string component, string verb)
     {

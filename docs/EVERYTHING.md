@@ -433,7 +433,7 @@ rhictl game set-path --game "<name>" --path "<dir>" [--yes|--dry-run]
 
 ```
 rhictl reshade install --game "<n>" [--channel stable|nightly|custom|<version>]
-                       [--dll dxgi|d3d9|d3d8|opengl32|<name>]
+                       [--dll dxgi|d3d9|d3d8|opengl32|<name>]   (a bare stem is normalized to .dll)
                        [--shaders off|custom | --packs a,b]
                        [--no-addons] [--yes|--dry-run]
 rhictl reshade update  --game "<n>" [--yes|--dry-run]
@@ -1182,7 +1182,7 @@ addon could not find; setting the shaper to `0` (Vanilla) restores the vanilla o
 ### 9.9 ReLimiter tab
 
 Persistence: `relimiter.ini` → `[FrameLimiter]`. **Trap:** the shipped template only contains
-`[UltraLimiter]`, while every writer (RHI and the addon) uses `[FrameLimiter]`.
+`[UltraLimiter]`, while every writer (RHI and the addon) uses `[FrameLimiter]`; the CLI renames it to `[FrameLimiter]` on install.
 
 **Frame pacing**
 
@@ -1483,7 +1483,7 @@ selection before calling; `shaders remove` uses this deliberately.
 
 ### ReLimiter section mismatch
 
-Template ships `[UltraLimiter]`; writers use `[FrameLimiter]`. Use `[FrameLimiter]` in the CLI.
+Template ships `[UltraLimiter]`; writers use `[FrameLimiter]`. The CLI normalizes the section to `[FrameLimiter]` on install.
 
 ### RenoDX LUT warning
 
@@ -2128,7 +2128,7 @@ is dominated by loading `RHI.Core` + WPF-free WinRT assemblies.
 4. `IDofFixService` has a `static abstract` member (cannot be a DI generic argument).
 5. `Rtx40MfgService.EnsureStagingAsync()` takes no progress argument.
 6. NVAPI has no NR driver-override setter in this build.
-7. `relimiter.ini` template contains `[UltraLimiter]`, writers use `[FrameLimiter]`.
+7. `relimiter.ini` template contains `[UltraLimiter]`, writers use `[FrameLimiter]`; CLI install renames it.
 8. `GameLibraryService.Save` only persists `Name`/`InstallPath`/`Source` per game, so
    `SteamAppId`, `EpicCatalogNamespace`, `EpicAppName` and `XboxAumid` are dropped on any save
    (the GUI has the same limitation). The CLI round-trips every other collection.

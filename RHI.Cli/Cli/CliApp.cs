@@ -87,7 +87,7 @@ internal static class CliApp
               doctor                     environment and capability check
               paths                      show every state directory
               status --game <n>          installed components for one game
-              reshade install --game <n> --channel stable|nightly [--dll dxgi|d3d9]
+              reshade install --game <n> --channel stable|nightly [--dll dxgi.dll|d3d9.dll]
               reshade update --game <n>
               reshade uninstall --game <n>
               reframework|dofix|dxvk|optiscaler install|uninstall --game <n>
