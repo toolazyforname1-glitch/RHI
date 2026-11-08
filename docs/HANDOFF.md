@@ -3,7 +3,7 @@
 **Written:** 2026-11-08
 **For:** whoever continues this project (human or fresh agent)
 **Status at write time:** everything builds, **50/50 checks pass**, parity batch 1 (config, launch/wiki
-overrides, reset-overrides, UE-Extended) is implemented and verified. Fork push pending.
+overrides, reset-overrides, UE-Extended, Feeder) is implemented and verified. Pushed to the fork on 2026-11-08 (`464e6d1`).
 
 Read this file first. It is deliberately operational: exact paths, exact commands, exact state,
 and the traps that cost time. The deep reference is `docs/EVERYTHING.md`; this is the "resume
@@ -633,7 +633,7 @@ same commit.
 | `ss tool\probe.ps1`, `ss tool\PROBE.md` | current universal versions |
 | `%LOCALAPPDATA%\RHI` | shared state; do not commit |
 
-The parity batch is committed locally (2026-11-08). Pushing is the remaining step:
+Everything is committed and pushed to the fork (HEAD `464e6d1`). For future commits use:
 
 ```powershell
 git -c http.version=HTTP/1.1 -c http.postBuffer=524288000 push fork main:main
