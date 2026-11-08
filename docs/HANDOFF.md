@@ -187,8 +187,8 @@ TOTAL: 47  PASS: 47  FAIL: 0
 - **Jusant** (UE5.2) — generic Unreal RenoDX `26.1104.1857`; DOF Fix install/uninstall; DLSS SR
   swap `3.1.13`↔`310.9.16` + restore.
 - **Thumper** (DX9) — ReShade 6.8.0 `d3d9.dll`; Luma build 810 (48 files); dgVoodoo 2.87.6.
-- **Quake II RTX** (Vulkan) — `vulkan status` works; `vulkan install` correctly blocked with
-  `ELEVATION_REQUIRED` (exit 5) because the shell is not elevated.
+- **Quake II RTX** (Vulkan) — `vulkan status` works; elevated `vulkan install --layer-only` created the layer, and
+  `vulkan uninstall` removed it cleanly.
 
 Two checks (`renodx ini-get`, `relimiter ini-list`) **skip with a pass** when the component is not
 installed in the target game, so a cleaned game still reports a meaningful green. Three checks are
