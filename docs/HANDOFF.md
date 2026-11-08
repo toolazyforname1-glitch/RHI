@@ -2,7 +2,7 @@
 
 **Written:** 2026-11-08
 **For:** whoever continues this project (human or fresh agent)
-**Status at write time:** everything builds, **47/47 checks pass**, parity batch 1 (config, launch/wiki
+**Status at write time:** everything builds, **50/50 checks pass**, parity batch 1 (config, launch/wiki
 overrides, reset-overrides, UE-Extended) is implemented and verified. Fork push pending.
 
 Read this file first. It is deliberately operational: exact paths, exact commands, exact state,
@@ -26,7 +26,7 @@ work" document.
 | GitHub CLI | `gh` 2.95.0, account `toolazyforname1-glitch`, scopes `gist, read:org, repo` |
 | Test game | removed 2026-11-08 (library cleaned); re-add any title with `game add --path <dir> --name <n>` |
 | Shared app state | `%LOCALAPPDATA%\RHI` |
-| Verify script | `RHI\tools\verify-rhictl.ps1` → **47/47 expected** |
+| Verify script | `RHI\tools\verify-rhictl.ps1` → **50/50 expected** |
 
 If any of these differ, verify before continuing:
 
@@ -139,7 +139,7 @@ DOF not eligible), check the `-Expected`/`-ErrorCode` handling before assuming a
 
 ---
 
-## 5. What the 47/47 verification actually covers
+## 5. What the 50/50 verification actually covers
 
 `RHI\tools\verify-rhictl.ps1` (parameters `-Exe`, `-Game`, defaults: the published exe and
 "Death in the Water 2").
@@ -164,7 +164,7 @@ DOF not eligible), check the `-Expected`/`-ErrorCode` handling before assuming a
 Expected tail:
 
 ```
-TOTAL: 47  PASS: 47  FAIL: 0
+TOTAL: 50  PASS: 50  FAIL: 0
 ```
 
 **Live-verified 2026-11-08 (multi-game):**
@@ -185,7 +185,9 @@ TOTAL: 47  PASS: 47  FAIL: 0
 - **Portal with RTX** — `dlss status` sees SR/RR/FG/NR; `set`+`restore` proven for RR
   (`310.9.1`↔`310.9.16`), FG (`310.9.16`↔`310.9.1`) and NR (`310.9.16`↔`310.8.2`).
 - **Jusant** (UE5.2) — generic Unreal RenoDX `26.1104.1857`; DOF Fix install/uninstall; DLSS SR
-  swap `3.1.13`↔`310.9.16` + restore.
+  swap `3.1.13`↔`310.9.16` + restore; Feeder `v1.19.0` install/uninstall (addon, DLSS5 Tool, NR
+  `310.9.16`, SR `310.9.16`, `DLSS5_Feed.fx` + `lumenite_Kernel.fx`) with a clean shader-folder
+  removal.
 - **Thumper** (DX9) — ReShade 6.8.0 `d3d9.dll`; Luma build 810 (48 files); dgVoodoo 2.87.6.
 - **Quake II RTX** (Vulkan) — `vulkan status` works; elevated `vulkan install --layer-only` created the layer, and
   `vulkan uninstall` removed it cleanly.
@@ -325,7 +327,7 @@ merge invalidated it; the fix commit exists because of that lesson.
 | 16 | ~~DOF Fix not live-tested~~ **done** | install/uninstall verified | Jusant (UE5.2), after the engine-hint fix |
 | 17 | FG / MFG effect not visually verified | file swaps verified; game not launched | visual proof only |
 | 18 | Per-game resolution toggle is system-wide | `res set` changes the display, not a game override; `ResToggleOverrides` is set via `game set-override --kind res-toggle` | by design |
-| 19 | Feeder addon has no CLI verb | GUI-only "Install Feeder Addon"; NR deployment from the CLI needs it | last GUI action without a terminal equivalent |
+| 19 | ~~Feeder addon has no CLI verb~~ **done** | `feeder status/install/uninstall`; deploys Feeder addon, DLSS5 Tool, NR/SR DLLs and the two shaders | Jusant v1.19.0; 64-bit only (32-bit host64 still GUI) |
 
 ---
 
@@ -625,6 +627,7 @@ same commit.
 | `RHI.Cli/Commands/ConfigCommand.cs` | committed 2026-11-08 |
 | `RHI.Cli/Commands/GameOverridesReset.cs` | committed 2026-11-08 |
 | `RHI.Cli/Commands/GameOverridesSet.cs` | committed 2026-11-08 |
+| `RHI.Cli/Commands/FeederCommand.cs` | committed 2026-11-08 |
 | `RenoDXCommander/Services/DlssStreamlineService.Swap.cs` | **modified** — 120 s → 10 min DLSS download cap |
 | `RHI-CLI-Repo` | snapshot updated with `DragDropHandlerShim.cs` + `ExtrasCommand.cs`; not a git repo |
 | `ss tool\probe.ps1`, `ss tool\PROBE.md` | current universal versions |
@@ -653,6 +656,7 @@ reshade|renodx|relimiter|display-commander|optiscaler ini-list|ini-get|ini-set
 shaders list|install|remove
 addons list|install|remove
 renodx install|update|uninstall|mode|peak-nits|ue-extended
+feeder status|install|uninstall
 luma list|install|uninstall
 dlss status|versions|set|restore|scales|render-scale
 reframework install|uninstall
@@ -749,7 +753,7 @@ The game's Unity prefs live at `HKCU\Software\Lighthouse Games Studio\Death in t
 
 - [ ] `dotnet build RHI.Cli\RHI.Cli.csproj -c Release` → 0 errors
 - [ ] `dotnet publish ...` → 0 errors
-- [ ] `tools\verify-rhictl.ps1` → 47/47 (or the new count, with new checks added)
+- [ ] `tools\verify-rhictl.ps1` → 50/50 (or the new count, with new checks added)
 - [ ] no `bin/`/`obj/`/state/`RHI-Setup.exe` staged
 - [ ] docs updated (`HANDOFF`, `EVERYTHING`, `GUI-INVENTORY` if a GUI item moved)
 - [ ] commit + push to `fork main` (HTTP/1.1 flags)

@@ -853,7 +853,22 @@ rhictl game clear-override --game <n> --kind <k>
   button's side effects: reinstalls ReShade on the global channel when a channel override existed,
   and removes a tracked DXVK install.
 
-### 7.24 `renodx ue-extended`
+### 7.25 `feeder`
+
+```
+rhictl feeder status|install|uninstall --game <n>
+```
+
+- `install` resolves the latest Feeder release from the cached version list, stages it
+  (`Renodx5AddonService.EnsureVersionStagedAsync`), copies `dlss5-feed.addon64`, then runs
+  `Renodx5AddonService.InstallAsync` (DLSS5 Tool `renodx-dlss5.addon64` + `nvngx_dlssnr.dll` with a
+  0-byte sentinel), deploys the newest `nvngx_dlss.dll`, and deploys `DLSS5_Feed.fx` +
+  `lumenite_Kernel.fx` (with their includes/texture) through `ShaderPackService`.
+- `uninstall` runs `Renodx5AddonService.Uninstall`, restores the SR/NR sentinels, deletes the
+  Feeder/Tool/shaders, removes the pack directories and the now-empty `reshade-shaders` tree.
+- 64-bit only: the 32-bit flow needs the `host64\` bootstrap, which stays GUI-side.
+
+### 7.26 `renodx ue-extended`
 
 ```
 rhictl renodx ue-extended --game <n> --value on|off
@@ -1425,9 +1440,10 @@ Everything below was executed on 2026-11-05 on the test machine.
 | In-game overlay | Home, Add-ons, Settings, ReLimiter (all sections), RenoDX (Simple + Intermediate) captured |
 | GUI compatibility | RHI relaunched after CLI installs, built the game's driver-profile section, closed cleanly; only a pre-existing WindowsApps access error and a caught cancellation from closing during startup scan |
 | Published build | Release publish succeeded; spot checks passed |
-| 2026-11-08 parity batch | `config list/get/set/unset`, `game set-launch/reset-launch`, `set-wiki-name/reset-wiki-name`, `reset-overrides`, `renodx ue-extended`; verify suite 47/47 |
-| 2026-11-08 multi-game live run | ReShade 64/32/OpenGL, RenoDX Unity/Unreal/UE-Extended, RE Framework, ReLimiter, DC, OptiScaler, ASI, DLSS Enabler, FG 20/30, MFG40, Encore, dgVoodoo, DXVK 32-bit, shaders, addons, preset, HDR, NVIDIA, set-name/set-dll/set-override; 47/47 |
-| 2026-11-08 targeted DLSS/UE5/Luma run | Portal RTX RR/FG/NR swaps + restore, Jusant SR swap + DOF Fix + RenoDX, Thumper Luma/dgVoodoo/DX9 ReShade, Quake II RTX Vulkan install/uninstall elevated; 47/47 |
+| 2026-11-08 parity batch | `config list/get/set/unset`, `game set-launch/reset-launch`, `set-wiki-name/reset-wiki-name`, `reset-overrides`, `renodx ue-extended`; verify suite 50/50 |
+| 2026-11-08 multi-game live run | ReShade 64/32/OpenGL, RenoDX Unity/Unreal/UE-Extended, RE Framework, ReLimiter, DC, OptiScaler, ASI, DLSS Enabler, FG 20/30, MFG40, Encore, dgVoodoo, DXVK 32-bit, shaders, addons, preset, HDR, NVIDIA, set-name/set-dll/set-override; 50/50 |
+| 2026-11-08 targeted DLSS/UE5/Luma run | Portal RTX RR/FG/NR swaps + restore, Jusant SR swap + DOF Fix + RenoDX, Thumper Luma/dgVoodoo/DX9 ReShade, Quake II RTX Vulkan install/uninstall elevated; 50/50 |
+| 2026-11-08 Feeder | `feeder v1.19.0` install/uninstall on Jusant (Feeder addon, DLSS5 Tool, NR/SR DLLs, DLSS5_Feed.fx + lumenite_Kernel.fx, clean shader removal); suite 50/50 |
 
 Not executed live (deliberately): NVIDIA writes, HDR on/off, resolution change, vibrance set,
 Vulkan layer install, and installation of the extras proxy DLLs. All have dry-run coverage.
@@ -1696,6 +1712,7 @@ reshade|renodx|relimiter|display-commander|optiscaler ini-list|ini-get|ini-set
 shaders list|install|remove
 addons list|install|remove
 renodx install|update|uninstall|mode|peak-nits|ue-extended
+feeder status|install|uninstall
 luma list|install|uninstall
 dlss status|versions|set|restore|scales|render-scale
 reframework install|uninstall

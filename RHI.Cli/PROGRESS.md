@@ -48,6 +48,7 @@ renodx install|update|uninstall
 renodx mode --value simple|intermediate|advanced
 renodx peak-nits --value <nits>
 renodx ue-extended --value on|off
+feeder status|install|uninstall        --game <n>   (64-bit; 32-bit uses the GUI host64)
 luma list|install|uninstall
 dlss status|versions|set|restore|scales|render-scale
 reframework|dofix|dxvk|optiscaler install|uninstall|update
@@ -118,7 +119,7 @@ All mutating verbs require `--yes`; all support `--dry-run`.
 ## Verified on hardware
 
 `Death in the Water 2` (Unity, DX11, 64-bit):
-- `tools\verify-rhictl.ps1` → **47/47** (config, reset-overrides and set-launch checks added 2026-11-08)
+- `tools\verify-rhictl.ps1` → **50/50** (config, reset-overrides and set-launch checks added 2026-11-08)
 - Live 2026-11-08: ReShade (64-bit, 32-bit, OpenGL), RenoDX (Unity, generic Unreal, UE-Extended), RE Framework, ReLimiter, Display Commander, OptiScaler, ASI, DLSS Enabler, 20/30 FG, MFG40, RTX Encore, dgVoodoo, DXVK 32-bit, shaders, addons, preset deploy, HDR, NVIDIA get/set/preset/override, set-name, set-dll/reset-dll, set-override/clear-override, reset-overrides
 - Live 2026-11-08 (2): Portal RTX DLSS RR/FG/NR/SR swap + restore; Jusant DLSS SR + DOF Fix + RenoDX; Thumper Luma + dgVoodoo + DX9 ReShade; Quake II RTX Vulkan status (install needs elevation)
 - ReShade 6.8.0 → `dxgi.dll`

@@ -91,6 +91,9 @@ Run-Check "renodx ini-get"    @("renodx","ini-get","--game",$Game,"--section","r
 Run-Check "relimiter ini-list" @("relimiter","ini-list","--game",$Game,"--json") -Json -SkipUnlessComponent "relimiter"
 
 Run-Check "reshade install dry"        @("reshade","install","--game",$Game,"--dry-run","--json") -Json
+Run-Check "feeder status"               @("feeder","status","--game",$Game,"--json") -Json
+Run-Check "feeder install dry"          @("feeder","install","--game",$Game,"--dry-run","--json") -Json
+Run-Check "feeder uninstall dry"        @("feeder","uninstall","--game",$Game,"--dry-run","--json") -Json
 Run-Check "renodx install dry"         @("renodx","install","--game",$Game,"--dry-run","--json") -Json -SkipUnlessEngine @("Unreal","UnrealLegacy","Unity")
 Run-Check "relimiter install dry"      @("relimiter","install","--game",$Game,"--dry-run","--json") -Json
 Run-Check "display-commander dry"      @("display-commander","install","--game",$Game,"--dry-run","--json") -Expected @(0,2) -ErrorCode "CONFLICT"

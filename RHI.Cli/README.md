@@ -56,6 +56,7 @@ shaders list|install|remove
 addons list|install|remove
 renodx install|update|uninstall|mode|peak-nits
 renodx ue-extended --game <n> --value on|off
+feeder status|install|uninstall --game <n>
 luma list|install|uninstall
 dlss status|versions|set|restore|scales|render-scale
 reframework install|uninstall

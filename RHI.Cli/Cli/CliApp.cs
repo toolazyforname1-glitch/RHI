@@ -56,6 +56,7 @@ internal static class CliApp
                 "library" => await LibraryCommand.RunAsync(args, services),
                 "game" => await GameCommand.RunAsync(args, services),
                 "config" => await ConfigCommand.RunAsync(args, services),
+                "feeder" => await FeederCommand.RunAsync(args, services),
                 _ => CliOutput.Fail($"{args.Group}.{args.Verb}",
                     "UNKNOWN_COMMAND", $"Unknown command '{args.Group}'. Run 'rhictl help'.", ExitCodes.Usage),
             };
@@ -96,6 +97,7 @@ internal static class CliApp
               renodx mode --game <n> --value simple|intermediate|advanced
               renodx peak-nits --game <n> --value <nits>
               renodx ue-extended --game <n> --value on|off
+              feeder status|install|uninstall --game <n>
               luma list|install|uninstall --game <n>
               shaders list | shaders install|remove --game <n> --packs a,b
               addons list | addons install|remove --game <n> --name <package>|--section <id>

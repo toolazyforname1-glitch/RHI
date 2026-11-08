@@ -97,7 +97,7 @@ Everything else in this group now maps to a CLI verb:
 | DLSS Enabler | `dlss-enabler install|uninstall --game <n>` |
 | 20/30 FG Unlock | `fg2030 install|uninstall --game <n>` |
 | Universal MFG Unlocker ("Multi Frame Gen") | `mfg40 install|uninstall --game <n>` |
-| Install Feeder Addon | **todo — GUI-only** (last action without a CLI verb) |
+| Install Feeder Addon | `feeder status|install|uninstall --game <n>` (64-bit; 32-bit GUI-side) |
 | dgVoodoo2 | `dgvoodoo install|uninstall --game <n> [--version <v>]` |
 | Ultra+ | `ultraplus url --game <n>` (link only; the site does the install) |
 | Deploy DLL / Quick Apply | covered per component via `--dll` |
@@ -138,5 +138,5 @@ Shared settings are read and written by the CLI through `config list|get|set|uns
   20/30 FG, RTX Encore, MFG Unlocker, dgVoodoo2, ReLimiter, Display Commander, shaders, presets,
   `update all`, game launch, HDR/resolution/vibrance, NVIDIA presets/overrides/global settings,
   DLDSR, and an MCP server.
-- **Remaining UI-only:** Install Feeder Addon (needs a `feeder` CLI verb), Ultra+ download (vendor
-  site), and purely visual settings (theme, layout, section order).
+- **Remaining UI-only:** Ultra+ download (vendor site), the 32-bit Feeder host64 bootstrap, and
+  purely visual settings (theme, layout, section order).
